@@ -1,0 +1,50 @@
+.joinTheCables{
+    width: clamp(250px, 100%,1200px);
+    height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: clamp(140px, 45vw, 700px);
+}
+
+.joinTheCables__firstCables, .joinTheCables__secondsCables{
+    border: 1px solid gray;
+
+    width: clamp(30px, 5vw, 60px);
+    height: clamp(120px, 30vw, 400px);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+
+    list-style: none;
+}
+
+.joinTheCables__firstCables__item, .joinTheCables__secondsCables__item{
+    background-color: rgba(112, 112, 112, 0.291);
+    width: 100%;
+    aspect-ratio: 1/1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;    
+}
+
+.joinTheCables__firstCables__item__border{
+    width: 70%;
+    aspect-ratio: 1/1;
+    border-radius: 100rem;
+}
+
+.joinTheCables__canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none; /* Evita que interfiera con otros elementos */
+    z-index: 1;
+}
+
+
