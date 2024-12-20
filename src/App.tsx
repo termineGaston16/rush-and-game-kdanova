@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import JoinTheCables from './GAMES/JoinTheCables';
+import JoinTheCables from './GAMES/JOINTHECABLES/JoinTheCables';
 
 export default function App() {
     return (
