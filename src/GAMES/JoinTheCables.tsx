@@ -2,8 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import '../STYLES/joinTheCables.css';
 
 export default function JoinTheCables() {
-    const [firstCables, setFirstCables] = useState<number[]>([1, 2, 3, 4]);
-    const [secondsCables, setSecondsCables] = useState<number[]>([1, 2, 3, 4]);
+
     const [initialPos, setInitialPos] = useState({ x: 0, y: 0 });
     const [currentPos, setCurrentPos] = useState({ x: 0, y: 0 });
     const canvasRef = useRef<HTMLCanvasElement>(null);
