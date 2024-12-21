@@ -6,7 +6,7 @@ export default function App() {
         <BrowserRouter>
             <Routes>
                 <Route path='*' element={'Error 404'} />
-
+        
                 <Route path='/' element={<JoinTheCables />} />
             </Routes>
         </BrowserRouter>
