@@ -5,5 +5,6 @@ export interface Cable {
     xInitialPosition: number,
     yInitialPosition: number,
     xActualPosition: number,
-    yActualPosition: number
+    yActualPosition: number,
+    cableValue: number
 } 

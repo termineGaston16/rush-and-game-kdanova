@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './joinTheCables.css'
 import { Cable } from '../../INTERFACES/types';
 import CanvasJoinTheCables from './CanvasJoinTheCables';
@@ -6,50 +6,107 @@ import CanvasJoinTheCables from './CanvasJoinTheCables';
 export default function JoinTheCables() {
     const [firstCables, setFirstCables] = useState<number[]>([1, 2, 3, 4]);
     const [secondsCables, setSecondsCables] = useState<number[]>([1, 2, 3, 4]);
+    const [verification, setVerification] = useState<number[]>([0, 0, 0, 0])
 
-    const [cableGrabbedData, setCableGrabbedData] = useState<Cable | undefined>(undefined)
+    const [cableGrabbedData, setCableGrabbedData] = useState<Cable[]>([])
 
-    const handleOnDragStart = (e: React.DragEvent<HTMLDivElement>, cableColor: string) => {
-        setCableGrabbedData({
-            isGrabbing: true,
-            cableConnected: false,
-            cableColor: cableColor,
-            xInitialPosition: e.clientX,
-            yInitialPosition: e.clientY,
-            xActualPosition: e.clientX,
-            yActualPosition: e.clientY
-        })
-    }
+    const handleOnDragStart = (e: React.DragEvent<HTMLDivElement>, cableRightData: number) => {
+        const indexCable = cableGrabbedData.findIndex(cable => cable.cableValue === cableRightData)
+        const colorCable = cableRightData === 1 ? 'aqua' :
+            cableRightData === 2 ? 'greenyellow' :
+                cableRightData === 3 ? 'blueviolet' :
+                    cableRightData === 4 ? 'white' :
+                        ''
 
-    const handleOnDrag = (e: React.DragEvent<HTMLDivElement>) => {
-        setCableGrabbedData(prevState => {
-            if (!prevState) return prevState
-
-            return {
-                ...prevState,
+        if (indexCable > -1) {
+            const newArray = structuredClone(cableGrabbedData)
+            newArray[indexCable] = {
+                cableColor: colorCable,
+                cableConnected: false,
+                cableValue: cableRightData,
+                isGrabbing: true,
                 xActualPosition: e.clientX,
+                xInitialPosition: e.clientX,
                 yActualPosition: e.clientY,
-            };
-        });
+                yInitialPosition: e.clientY
+            }
+            setCableGrabbedData(newArray)
 
+        } else {
+
+            setCableGrabbedData(prevArray => [...prevArray, {
+                cableColor: colorCable,
+                cableConnected: false,
+                cableValue: cableRightData,
+                isGrabbing: true,
+                xActualPosition: e.clientX,
+                xInitialPosition: e.clientX,
+                yActualPosition: e.clientY,
+                yInitialPosition: e.clientY
+            }])
+        }
+
+        e.dataTransfer.setData('cableRightData', cableRightData.toString())
     }
 
-    const handleOnDrop = () => {
-        setCableGrabbedData(prevState => {
-            if (!prevState) return prevState
-            
-            return {
-                ...prevState,
+    const handleOnDrag = (e: React.DragEvent<HTMLDivElement>, cableRightData: number) => {
+
+        const indexCable = cableGrabbedData.findIndex(cable => cable.cableValue === cableRightData)
+        if (indexCable > -1) {
+            const newArray = structuredClone(cableGrabbedData)
+            newArray[indexCable] = {
+                ...cableGrabbedData[indexCable],
+                xActualPosition: e.clientX,
+                yActualPosition: e.clientY
+            }
+            setCableGrabbedData(newArray)
+        }
+    }
+
+    const handleOnDrop = (e: React.DragEvent<HTMLDivElement>, cableLeftData: number) => {
+        const indexCable = cableGrabbedData.findIndex(cable => cable.cableValue.toString() === e.dataTransfer.getData('cableRightData'))
+        if (indexCable > -1) {
+            const newArray = structuredClone(cableGrabbedData)
+            newArray[indexCable] = {
+                ...cableGrabbedData[indexCable],
                 cableConnected: true
             }
-        })
+            setCableGrabbedData(newArray)
+        }
+
+
+
+        const newArray = structuredClone(verification)
+        const cableRightData = parseInt(e.dataTransfer.getData('cableRightData'))
+
+        if (cableLeftData === cableRightData) {
+            newArray[cableRightData - 1] = 1
+        } else {
+            newArray[cableRightData - 1] = 0
+        }
+        setVerification(newArray)
     }
 
     const handleOnDragEnd = () => {
-        if (!cableGrabbedData?.cableConnected) {
-            setCableGrabbedData(undefined)
-        }
+        const newArray = cableGrabbedData.filter(cable => cable.cableConnected)
+        setCableGrabbedData(newArray)
+
+        if (verification.every(cable => cable === 1)) alert('¡JUEGO GANADO!')
     }
+
+    function mezclarArray(cables: number[]) {
+        const copia = [...cables]; // Crear una copia para evitar mutar el original
+        for (let i = copia.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1)); // Elegir un índice al azar
+          [copia[i], copia[j]] = [copia[j], copia[i]]; // Intercambiar elementos
+        }
+        return copia;
+      }
+      
+      useEffect(() => {
+        setFirstCables(mezclarArray(firstCables)); 
+        setSecondsCables(mezclarArray(secondsCables))
+      }, []); 
 
     return (
         <main
@@ -64,14 +121,8 @@ export default function JoinTheCables() {
                         <div
                             draggable
 
-                            onDragStart={(e) => handleOnDragStart(e,
-                                cableRightData === 1 ? 'aqua' :
-                                    cableRightData === 2 ? 'greenyellow' :
-                                        cableRightData === 3 ? 'blueviolet' :
-                                            cableRightData === 4 ? 'white' :
-                                                ''
-                            )}
-                            onDrag={(e) => handleOnDrag(e)}
+                            onDragStart={(e) => handleOnDragStart(e, cableRightData)}
+                            onDrag={(e) => handleOnDrag(e, cableRightData)}
 
                             className="joinTheCables__firstCables__item__border"
                             style={{
@@ -101,7 +152,7 @@ export default function JoinTheCables() {
                                 ...(cableLeftData === 4 && { border: '4px solid white' }),
                             }}
 
-                            onDrop={() => handleOnDrop()}
+                            onDrop={(e) => handleOnDrop(e, cableLeftData)}
                             onDragOver={(e) => e.preventDefault()}
                         ></div>
                     </li>
