@@ -7,4 +7,9 @@ export interface Cable {
     xActualPosition: number,
     yActualPosition: number,
     cableValue: number
-} 
+}
+
+export interface Handle {
+    xActualPosition: number,
+    yActualPosition: number,
+}

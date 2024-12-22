@@ -130,7 +130,7 @@ export default function JoinTheCables() {
                                 ...(cableRightData === 2 && { backgroundColor: 'greenyellow' }),
                                 ...(cableRightData === 3 && { backgroundColor: 'blueviolet' }),
                                 ...(cableRightData === 4 && { backgroundColor: 'white' }),
-                                cursor: 'grabbing'
+                                cursor: 'grab'
                             }}
                         ></div>
                     </li>
