@@ -34,7 +34,8 @@
 }
 
 .joinTheCables__firstCables__item__border{
-    width: 70%;
+    width: 30%;
+    min-width: 15px;
     aspect-ratio: 1/1;
     border-radius: 100rem;
 }
