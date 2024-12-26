@@ -1,0 +1,39 @@
+.MemoryGame{
+    width: 100%;
+    height: 100vh;
+
+    max-width: 1200px;
+    min-width: 250px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.MemoryGame__list{
+    border: 1px solid rgb(71, 71, 71);
+    border-radius: 1rem;
+
+    width: clamp(500px, 80vw, 500px);
+    aspect-ratio: 1/1;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 130px);
+    gap: 1vw;
+
+    align-items: center;
+    justify-content: center;
+    list-style: none;
+}
+
+.MemoryGame__list__item{
+    aspect-ratio: 1/1;
+
+    
+    border: 1px solid rgb(116, 116, 116);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

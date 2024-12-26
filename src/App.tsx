@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import JoinTheCables from './GAMES/JOINTHECABLES/JoinTheCables';
 import RotateTheTriangle from './GAMES/ROTATETHETRIANGULE/RotateTheTriangle';
 import CopyTheCode from './GAMES/COPYTHECODE/CopyTheCode';
+import MemoryGame from './GAMES/MEMORYGAME/MemoryGame';
 
 export default function App() {
     return (
@@ -11,7 +12,8 @@ export default function App() {
         
                 <Route path='/JoinTheCables' element={<JoinTheCables />} />
                 <Route path='/RotateTheTriangle' element={<RotateTheTriangle />} />
-                <Route path='/' element={<CopyTheCode />} />
+                <Route path='/CopyTheCode' element={<CopyTheCode />} />
+                <Route path='/' element={<MemoryGame />} />
             </Routes>
         </BrowserRouter>
     );
