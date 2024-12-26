@@ -82,11 +82,16 @@
 
 .handlebar-component__handlebar{
     width: 70%;
-    border: 10px solid rgb(166, 166, 166);
+    border: 20px solid rgb(87, 87, 87);
     background: none;
-    border-top: 1px solid red;
+    border-top: 20px solid aqua;
 
     cursor: grab;
+}
+
+.handlebar-component__handlebar__icon{
+    width: 40%;
+    height: 40%;
 }
 
 .handlebar-component__handlebar:active{

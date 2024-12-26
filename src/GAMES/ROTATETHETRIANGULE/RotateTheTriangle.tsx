@@ -1,12 +1,20 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { FaArrowsRotate } from "react-icons/fa6";
 import CanvasRotateTheTriangle from './CanvasRotateTheTriangle';
 import './rotateTheTriangle.css';
 
 export default function RotateTheTriangle() {
-    const [rotation, setRotation] = useState(0);
+    const [rotationA, setRotationA] = useState<number>(Math.floor(Math.random() * 350));
+    const [rotationB, setRotationB] = useState<number>(Math.floor(Math.random() * 350));
     const divRef = useRef<HTMLDivElement>(null);
     const isDragging = useRef(false);
-    const startAngle = useRef(0);
+    const lastAngle = useRef(0);
+
+    useEffect(() => {
+        while (rotationA === rotationB) {
+            setRotationA(Math.floor(Math.random() * 360));
+        }
+    }, [rotationA, rotationB]);
 
     const calculateAngle = (clientX: number, clientY: number) => {
         if (!divRef.current) return 0;
@@ -14,33 +22,47 @@ export default function RotateTheTriangle() {
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
 
-        // Calcular el ángulo entre el centro del div y el cursor
         const deltaX = clientX - centerX;
         const deltaY = clientY - centerY;
+
         return Math.atan2(deltaY, deltaX) * (180 / Math.PI); // Convertir a grados
     };
 
     const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         isDragging.current = true;
-        startAngle.current = calculateAngle(e.clientX, e.clientY) - rotation;
+        lastAngle.current = calculateAngle(e.clientX, e.clientY);
     };
 
-    const handleMouseMove = () => {
+    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         if (isDragging.current) {
-            const angle = calculateAngle(e.clientX, e.clientY);
-            setRotation(angle - startAngle.current);
+
+            if(rotationB >= -2 && rotationB <= 2){
+                alert('JUEGO GANADO!')
+                return
+            }
+
+            const currentAngle = calculateAngle(e.clientX, e.clientY);
+            const deltaAngle = currentAngle - lastAngle.current;
+
+            setRotationB((prevRotationB) => prevRotationB + deltaAngle);
+            lastAngle.current = currentAngle;
         }
     };
-    
-    const handelMouseUp = () =>{
 
-    }
+    const handleMouseUp = () => {
+        isDragging.current = false;
+    };
 
     return (
         <main className="rotateTheTriangle">
             <section className="rotateTheTriangle__component-of-the-triangle">
-                <div className="rotateTheTriangle__component-of-the-triangle__edge-of-the-circle">
-                    <div className="rotateTheTriangle__component-of-the-triangle__edge-of-the-circle__triangle">
+                <div
+                    style={{ transform: `rotate(${rotationA}deg)` }}
+                    className="rotateTheTriangle__component-of-the-triangle__edge-of-the-circle">
+                    <div
+                        style={{ transform: `rotate(${rotationB}deg)` }}
+                        className="rotateTheTriangle__component-of-the-triangle__edge-of-the-circle__triangle"
+                    >
                         <CanvasRotateTheTriangle />
                     </div>
                 </div>
@@ -49,11 +71,11 @@ export default function RotateTheTriangle() {
                 <div
                     className="handlebar-component__handlebar"
                     ref={divRef}
-                    style={{ transform: `rotate(${rotation}deg)`}}
-
-                    onMouseDown={(e) => handleMouseDown(e)}
-
-                ></div>
+                    style={{ transform: `rotate(${rotationB}deg)` }}
+                    onMouseDown={handleMouseDown}
+                    onMouseMove={handleMouseMove}
+                    onMouseUp={handleMouseUp}
+                ><FaArrowsRotate className='handlebar-component__handlebar__icon'/></div>
             </section>
         </main>
     );

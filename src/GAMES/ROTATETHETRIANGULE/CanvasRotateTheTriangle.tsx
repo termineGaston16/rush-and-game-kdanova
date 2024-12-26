@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react"
 export default function CanvasRotateTheTriangle() {
 
     const canvasRef = useRef<HTMLCanvasElement>(null)
-    const [possibleColors, setPossibleColors] = useState<string[]>(['crimson',
+    const [possibleColors, _setPossibleColors] = useState<string[]>(['crimson',
         'darkslateblue',
         'yellow',
         'goldenrod',
