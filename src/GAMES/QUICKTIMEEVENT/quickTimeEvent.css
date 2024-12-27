@@ -1,0 +1,68 @@
+.QuickTimeEvent {
+    width: 100%;
+    height: 100vh;
+
+    max-width: 1200px;
+    min-width: 250px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.QuickTimeEvent__list {
+    position: relative;
+
+    border: 1px solid white;
+    background: radial-gradient(circle at 40% 60%, rgb(106, 106, 106), rgb(39, 39, 39));
+    width: clamp(200px, 90vw, 1000px);
+    aspect-ratio: 16/9;
+
+    list-style: none;
+
+}
+
+.QuickTimeEvent__list__item {
+    border: 1px solid white;
+
+    width: clamp(50px, 10vw, 100px);
+    aspect-ratio: 1/1;
+    border-radius: 1rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    background: radial-gradient(circle at 30% 60%, rgb(55, 55, 55), rgb(42, 42, 42));
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: clamp(14px, 3vw, 40px);
+    transition: .3s;
+    pointer-events: none;
+}
+
+
+
+.QuickTimeEvent__list__item::before {
+    content: '';
+
+    position: absolute;
+    width: 90%;
+    height: 10px;
+
+    background-color: red;
+    box-shadow: 0px 0px 10px red;
+    bottom: 10px;
+
+    animation: timeBar 5s linear forwards;
+}
+
+@keyframes timeBar {
+    0%{
+        width: 90%;
+    }
+    100%{
+        width: 0%;
+    }
+}

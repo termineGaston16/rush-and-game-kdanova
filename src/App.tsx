@@ -3,6 +3,7 @@ import JoinTheCables from './GAMES/JOINTHECABLES/JoinTheCables';
 import RotateTheTriangle from './GAMES/ROTATETHETRIANGULE/RotateTheTriangle';
 import CopyTheCode from './GAMES/COPYTHECODE/CopyTheCode';
 import MemoryGame from './GAMES/MEMORYGAME/MemoryGame';
+import QuickTimeEvent from './GAMES/QUICKTIMEEVENT/QuickTimeEvent';
 
 export default function App() {
     return (
@@ -13,7 +14,8 @@ export default function App() {
                 <Route path='/JoinTheCables' element={<JoinTheCables />} />
                 <Route path='/RotateTheTriangle' element={<RotateTheTriangle />} />
                 <Route path='/CopyTheCode' element={<CopyTheCode />} />
-                <Route path='/' element={<MemoryGame />} />
+                <Route path='/MemoryGame' element={<MemoryGame />} />
+                <Route path='/' element={<QuickTimeEvent />} />
             </Routes>
         </BrowserRouter>
     );
