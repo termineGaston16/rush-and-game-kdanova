@@ -1,0 +1,14 @@
+.CatchIko{
+    width: 100%;
+    min-height: 130vh;
+    position: relative;
+}
+
+.CatchIko__flashlight{
+    width: 100%;
+    min-height: 130vh;
+    position: relative;
+    z-index: 1;
+    pointer-events: none;
+}
+

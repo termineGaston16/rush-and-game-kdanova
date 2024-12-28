@@ -4,6 +4,7 @@ import RotateTheTriangle from './GAMES/ROTATETHETRIANGULE/RotateTheTriangle';
 import CopyTheCode from './GAMES/COPYTHECODE/CopyTheCode';
 import MemoryGame from './GAMES/MEMORYGAME/MemoryGame';
 import QuickTimeEvent from './GAMES/QUICKTIMEEVENT/QuickTimeEvent';
+import CatchIko from './GAMES/CATCHIKO/CatchIko';
 
 export default function App() {
     return (
@@ -16,6 +17,7 @@ export default function App() {
                 <Route path='/CopyTheCode' element={<CopyTheCode />} />
                 <Route path='/MemoryGame' element={<MemoryGame />} />
                 <Route path='/QuickTimeEvent' element={<QuickTimeEvent />} />
+                <Route path='/' element={<CatchIko />} />
             </Routes>
         </BrowserRouter>
     );
