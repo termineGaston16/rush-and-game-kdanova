@@ -43,7 +43,6 @@
 }
 
 
-
 .QuickTimeEvent__list__item::before {
     content: '';
 
@@ -65,4 +64,10 @@
     100%{
         width: 0%;
     }
+}
+
+.keyPress{
+    transform: scale(1.1);
+    box-shadow: 0px 0px 1rem aqua;
+    opacity: 0;
 }

@@ -7,12 +7,14 @@ export default function QuickTimeEvent() {
         key: string,
         isPressed: boolean,
         xPos: number,
-        yPos: number,
-        timeBeforeLosing: number
+        yPos: number
     }[]>([])
+    const lettersPrecionadas = useRef<boolean[]>([false, false, false, false, false])
 
     const counter = useRef<number>(0)
     const [indexLetter, setIndexLetter] = useState<number>(0)
+    const divRef = useRef<null | HTMLUListElement>(null)
+    const mainRef = useRef<HTMLElement | null>(null);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -20,9 +22,8 @@ export default function QuickTimeEvent() {
             setLettersToAppreciate(prevArray => ([...prevArray, {
                 isPressed: false,
                 key: String.fromCharCode(Math.floor(Math.random() * 26) + 65),
-                xPos: Math.floor(Math.random() * 400),
-                yPos: Math.floor(Math.random() * 600),
-                timeBeforeLosing: 5
+                xPos: Math.floor(Math.random() * (divRef.current?.getBoundingClientRect().width! - 100)),
+                yPos: Math.floor(Math.random() * (divRef.current?.getBoundingClientRect().height! - 100)),
             }]))
 
             ++counter.current
@@ -31,30 +32,53 @@ export default function QuickTimeEvent() {
 
         }, 1000)
 
+        // Enfoca automáticamente el contenedor al montar el componente
+        if (mainRef.current) {
+            mainRef.current.focus();
+        }
+
         return () => clearInterval(interval)
     }, [])
 
-    useEffect(() => {
 
+    useEffect(() => {
         if (lettersToAppreciate.length < 1) return
 
         setTimeout(() => {
-            if (!lettersToAppreciate[indexLetter].isPressed) {
-                // alert('Juego perdido');
-            }
+           if(!lettersPrecionadas.current[indexLetter]){
+            alert('fin del juego')
+           }
         }, 5000);
 
         setIndexLetter(prevItem => ++prevItem)
     }, [lettersToAppreciate])
 
+
     const onKeyDownHandle = (e: React.KeyboardEvent<HTMLElement>) => {
-        console.log(e.key);
+        const keyPress = e.key.toLocaleUpperCase()
+
+        const indexKeyPress = lettersToAppreciate.findIndex(letter => letter.key === keyPress && !letter.isPressed)
+
+        if (indexKeyPress > -1) {
+            const newArray = structuredClone(lettersToAppreciate)
+            newArray[indexKeyPress].isPressed = true
+            lettersPrecionadas.current[indexKeyPress] = true
+            setLettersToAppreciate(newArray)
+
+            if(!lettersPrecionadas.current.some(letter => !letter)){
+                alert('¡JUEGO GANADO!')
+            }
+        }
     }
 
     return (<main
+        ref={mainRef}
+        tabIndex={0}
         onKeyDown={(e) => onKeyDownHandle(e)}
         className="QuickTimeEvent">
-        <ul className="QuickTimeEvent__list">
+        <ul
+            ref={divRef}
+            className="QuickTimeEvent__list">
             {lettersToAppreciate.map((letter, index) => (
                 <li
                     className={`
@@ -63,8 +87,8 @@ export default function QuickTimeEvent() {
                         `}
                     style={{
                         position: 'absolute',
-                        top: letter.xPos,
-                        left: letter.yPos
+                        top: letter.yPos,
+                        left: letter.xPos
                     }}
                     key={index}>{letter.key}</li>
             ))}

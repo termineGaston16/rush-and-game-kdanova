@@ -15,7 +15,7 @@ export default function App() {
                 <Route path='/RotateTheTriangle' element={<RotateTheTriangle />} />
                 <Route path='/CopyTheCode' element={<CopyTheCode />} />
                 <Route path='/MemoryGame' element={<MemoryGame />} />
-                <Route path='/' element={<QuickTimeEvent />} />
+                <Route path='/QuickTimeEvent' element={<QuickTimeEvent />} />
             </Routes>
         </BrowserRouter>
     );
