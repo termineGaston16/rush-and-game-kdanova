@@ -4,11 +4,12 @@
     position: relative;
 }
 
-.CatchIko__flashlight{
-    width: 100%;
-    min-height: 130vh;
-    position: relative;
-    z-index: 1;
-    pointer-events: none;
+.CatchIko__iko{
+   position: absolute;
+   width: 200px;
+   height: 200px;
+   border: 2px solid rgb(0, 255, 255);
+   border-radius: 10rem;
+   transition: 1s;
+   cursor: pointer;
 }
-
