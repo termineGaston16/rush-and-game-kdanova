@@ -7,14 +7,12 @@ export default function Colors() {
     const [playerRhythm, setPlayerRhythm] = useState<number[]>([])
 
     const createRhythm = () => {
-        if(rhythm.length >= 3) return alert('!JUEGO GANADO')
+        if (rhythm.length >= 3) return alert('!JUEGO GANADO')
 
-        for (let index = 0; index < rhythm.length + 1; index++) {
-            setRhythm(prevArray => [...prevArray, Math.floor(Math.random() * 4)])
-        }
+        setRhythm(prevArray => [...prevArray, Math.floor(Math.random() * 4)])
     }
 
-    const showPattern = ()=>{
+    const showPattern = () => {
         if (!tableRef.current) return
 
         rhythm.forEach((item, index) => {
@@ -78,16 +76,22 @@ export default function Colors() {
         createRhythm()
     }, [])
 
-    useEffect(()=>{
-        if(playerRhythm.length > 0 && playerRhythm.length === rhythm.length){
-            if(rhythm.every((item, index) =>  item === playerRhythm[index])){
+    useEffect(() => {
+        if (playerRhythm.length > 0 && playerRhythm.length === rhythm.length) {
+            if (rhythm.every((item, index) => item === playerRhythm[index])) {
                 createRhythm()
-            }else{
-                setPlayerRhythm([])
+            } else {
+
+                tableRef.current?.classList.add('error')
+                setTimeout(() => {
+                    tableRef.current?.classList.remove('error')
+                }, 1500)
+
                 showPattern()
             }
+            setPlayerRhythm([])
         }
-    },[playerRhythm])
+    }, [playerRhythm])
 
     return (<main className='Colors'>
         <ul
