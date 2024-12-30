@@ -13,7 +13,23 @@
   color: white;
   overflow-x: hidden;
 
+  background-image: url('../../public/wallpaper-menu.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
   scrollbar-gutter: stable;
+}
+
+:root::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.577);
 }
 
 /* Cuerpo, aquí se centra la app. Como es el cuerpo ya tiene el ancho */
