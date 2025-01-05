@@ -1,4 +1,4 @@
-.ScoreTable{
+.ScoreTable {
     width: 100%;
     height: 100vh;
 
@@ -15,7 +15,7 @@
     gap: 5%;
 }
 
-.ScoreTable__container{
+.ScoreTable__container {
     background-color: rgba(0, 0, 0, 0.893);
     border-radius: 20px;
 
@@ -33,15 +33,15 @@
     overflow-x: hidden;
 }
 
-.ScoreTable__container__title{
+.ScoreTable__container__title {
     font-family: 27px;
 }
 
-.ScoreTable__container__subtitle{
+.ScoreTable__container__subtitle {
     font-size: clamp(15px, 1vw, 17px);
 }
 
-.ScoreTabley__btn{
+.ScoreTabley__btn {
     background: none;
     border: none;
 
@@ -52,3 +52,110 @@
     text-decoration: underline 1px;
 
 }
+
+.ScoreTable__container__loading {
+
+    width: 100%;
+    text-align: center;
+
+    font-family: 'Times New Roman', Times, serif;
+    font-size: clamp(20px, 2vw, 22px);
+    font-style: italic;
+    transition: .3s;
+    animation: loadingAnimation 1s linear infinite;
+}
+
+@keyframes loadingAnimation {
+    0% {
+        transform: scale(1);
+        color: rgba(255, 255, 255, 0.467);
+    }
+
+    50% {
+        transform: scale(1.1);
+        color: white;
+    }
+
+    100% {
+        transform: scale(1);
+        color: rgba(255, 255, 255, 0.467);
+    }
+}
+
+.isError-container {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+
+}
+
+.isError-container__icon {
+    width: 20%;
+    height: 20%;
+    color: red;
+}
+
+.isError-container__span {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: clamp(3px, 1.5vw, 18px);
+    color: red;
+}
+
+.isError-container__btn{
+    background: none;
+    border: none;
+    color: white;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.ScoreTable__container__list{
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    flex-direction: column;
+
+    list-style: none;
+    overflow-x: hidden;
+    overflow-y: auto;
+    gap: 10px;
+}
+
+.ScoreTable__container__list__item{
+    width: 100%;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: clamp(15px, 2vw, 24px);
+    padding: 0px 5px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.ScoreTable__container__list__item__span{
+    font-weight: 900;
+}
+
+.ScoreTable__container__list::-webkit-scrollbar{
+    width: 3px;
+}   
+
+.ScoreTable__container__list::-webkit-scrollbar-thumb{
+    background-color: white;
+}  
+
+
+.ScoreTable__container__list::-webkit-scrollbar-track{
+    background-color: black;
+}  

@@ -13,3 +13,9 @@ export interface Handle {
     xActualPosition: number,
     yActualPosition: number,
 }
+
+export interface Player {
+    username: string,
+    password: string,
+    score: number
+}

@@ -1,5 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
+import { Player } from "../INTERFACES/types";
+import { PLAYERS_IN_DB } from "../BASEDATAPREV";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -15,3 +17,22 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+
+
+// OBTENER 10 JUGADORES Y ORDENARLOS
+export const getPlayersFromDB = (playersOrderedLocally: Player[]): Player[] => {
+
+  try {
+    const arrayDBOrdered = PLAYERS_IN_DB.sort((a, b) => b.score - a.score)
+    return [...playersOrderedLocally, ...arrayDBOrdered.slice(playersOrderedLocally.length, playersOrderedLocally.length + 10)]
+
+  } catch (error) {
+
+    console.error(error)
+    throw error
+
+  }
+
+}
+
+// VALIDAR LOGIN

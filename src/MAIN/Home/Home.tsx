@@ -9,15 +9,17 @@ import LogoCompleto from '../../../public/logo(sinfondo)-completo.png'
 import './home.css'
 import { useEffect, useState } from "react";
 import HowToPlay from "../HowToPlay/HowToPlay";
-import { User } from "./type";
 import ScoreTable from "../ScoreTable/ScoreTable";
+import { Player } from "../../INTERFACES/types";
+import Login from "../Login/Login";
 
 export default function Home() {
 
     const [showInstructions, setShowInstructions] = useState<boolean>(false)
     const [showScoreTable, setShowScoreTable] = useState<boolean>(false)
+    const [showLogin, setShowLogin] = useState<boolean>(false)
 
-    const [localAccount, setLocalAccount] = useState<User | undefined>(undefined)
+    const [localAccount, setLocalAccount] = useState<Player | undefined>(undefined)
 
     useEffect(() => { document.title = 'Home | Rush & Game' }, [])
 
@@ -29,8 +31,8 @@ export default function Home() {
 
         {localAccount &&
             <div className="Home__users-data">
-                <span className="Home__users-data__name">Usuario</span>
-                <span className="Home__users-data__score">0k <GiDiamonds /></span>
+                <span className="Home__users-data__name">{localAccount.username}</span>
+                <span className="Home__users-data__score">{localAccount.score}k <GiDiamonds /></span>
             </div>}
 
         <div className="Home__buttons">
@@ -52,6 +54,7 @@ export default function Home() {
             <div className="Home__buttons__count">
 
                 <button
+                    onClick={() => setShowLogin(true)}
                     className="Home__buttons__count__login"
                     type="button">Loguearse <MdOutlineAccountCircle /></button>
 
@@ -64,5 +67,6 @@ export default function Home() {
 
         {showInstructions && <HowToPlay setShowInstructions={setShowInstructions} />}
         {showScoreTable && <ScoreTable setShowScoreTable={setShowScoreTable} />}
+        {showLogin && <Login setShowLogin={setShowLogin}/>}
     </main>)
 }
