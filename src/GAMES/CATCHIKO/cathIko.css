@@ -1,7 +1,26 @@
 .CatchIko{
-    width: 100%;
-    min-height: 130vh;
-    position: relative;
+    width: 100vw;
+    min-height: 150vh;
+
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 99;
+
+    background: url('../../../public/wallpaper-catch_iko.png');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.CatchIko::before{
+    content: '';
+    
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+
+    background-color: rgba(0, 0, 0, 0.468);
 }
 
 .CatchIko__iko{

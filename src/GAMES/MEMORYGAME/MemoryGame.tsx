@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react"
 import './memoryGame.css'
 
-export default function MemoryGame() {
+interface Props {
+    lineOfGames: (numberRandom: number) => void
+}
+
+const MemoryGame: React.FC<Props> =({lineOfGames})=> {
 
     const [clickcounter, setClickcounter] = useState<0 | 1>(0)
     const [isClickable, setIsClickable] = useState<boolean>(true);
@@ -87,7 +91,7 @@ export default function MemoryGame() {
     }, [])
 
     useEffect(() => {
-        if (itemsFound.size === 4) alert("¡JUEGO GANADO!")
+        if (itemsFound.size === 4) lineOfGames(Math.floor(Math.random() * 7))
     }, [itemsFound])
 
 
@@ -105,3 +109,5 @@ export default function MemoryGame() {
         </ul>
     </main>)
 }
+
+export default MemoryGame;

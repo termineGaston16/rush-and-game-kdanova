@@ -1,13 +1,18 @@
 import { useEffect, useRef, useState } from 'react'
 import './colors.css'
-export default function Colors() {
+
+interface Props {
+    lineOfGames: (numberRandom: number) => void
+}
+
+const Colors: React.FC<Props> = ({ lineOfGames }) => {
 
     const tableRef = useRef<HTMLUListElement>(null)
     const [rhythm, setRhythm] = useState<number[]>([])
     const [playerRhythm, setPlayerRhythm] = useState<number[]>([])
 
     const createRhythm = () => {
-        if (rhythm.length >= 3) return alert('!JUEGO GANADO')
+        if (rhythm.length >= 3) return lineOfGames(Math.floor(Math.random() * 7))
 
         setRhythm(prevArray => [...prevArray, Math.floor(Math.random() * 4)])
     }
@@ -132,3 +137,5 @@ export default function Colors() {
         </ul>
     </main>)
 }
+
+export default Colors

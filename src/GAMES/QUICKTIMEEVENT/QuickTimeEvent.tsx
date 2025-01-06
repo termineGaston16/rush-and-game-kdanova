@@ -1,7 +1,11 @@
 import { useEffect, useRef, useState } from "react"
 import './quickTimeEvent.css'
 
-export default function QuickTimeEvent() {
+interface Props {
+    lineOfGames: (numberRandom: number) => void
+}
+
+const QuickTimeEvent: React.FC<Props>=({lineOfGames})=> {
 
     const [lettersToAppreciate, setLettersToAppreciate] = useState<{
         key: string,
@@ -66,7 +70,7 @@ export default function QuickTimeEvent() {
             setLettersToAppreciate(newArray)
 
             if(!lettersPrecionadas.current.some(letter => !letter)){
-                alert('¡JUEGO GANADO!')
+                lineOfGames(Math.floor(Math.random() * 7))
             }
         }
     }
@@ -95,3 +99,5 @@ export default function QuickTimeEvent() {
         </ul>
     </main>)
 }
+
+export default QuickTimeEvent;

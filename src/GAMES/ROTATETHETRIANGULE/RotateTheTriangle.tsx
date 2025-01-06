@@ -3,7 +3,11 @@ import { FaArrowsRotate } from "react-icons/fa6";
 import CanvasRotateTheTriangle from './CanvasRotateTheTriangle';
 import './rotateTheTriangle.css';
 
-export default function RotateTheTriangle() {
+interface Props {
+    lineOfGames: (numberRandom: number) => void
+}
+
+const RotateTheTriangle: React.FC<Props> =({lineOfGames})=> {
     const [rotationA, setRotationA] = useState<number>(Math.floor(Math.random() * 350));
     const [rotationB, setRotationB] = useState<number>(Math.floor(Math.random() * 350));
     const divRef = useRef<HTMLDivElement>(null);
@@ -37,7 +41,7 @@ export default function RotateTheTriangle() {
         if (isDragging.current) {
 
             if(rotationB >= -2 && rotationB <= 2){
-                alert('JUEGO GANADO!')
+                lineOfGames(Math.floor(Math.random() * 7))
                 return
             }
 
@@ -80,3 +84,5 @@ export default function RotateTheTriangle() {
         </main>
     );
 }
+
+export default RotateTheTriangle;

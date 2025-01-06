@@ -101,3 +101,20 @@
     cursor: pointer;
 }
 
+.form__login__isLoadingLogo{
+    width: 20%;
+    height: 20%;
+
+    border-radius: 30px;
+    padding: 5%;
+    animation: loadingAnimation 1s infinite ease-in-out;
+}
+
+@keyframes loadingAnimation {
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}

@@ -2,7 +2,6 @@ import { useQuery } from 'react-query'
 import './scoreTable.css'
 import { useEffect, useRef, useState } from 'react'
 import { Player } from '../../INTERFACES/types'
-import { getPlayersFromDB } from '../../FIREBASE/database'
 import { PiStarThin } from "react-icons/pi";
 import { GiCrossMark } from "react-icons/gi";
 
@@ -47,7 +46,7 @@ const ScoreTable: React.FC<Props> = ({ setShowScoreTable }) => {
                     key={index}>
                         <span 
                         className='ScoreTable__container__list__item__span'
-                        >{index}</span> {player.username} | {player.score} <PiStarThin />
+                        >{index}</span> {player.username} | {player.score.toFixed(2)} <PiStarThin />
                     </li>
                 ))}
             </ul>)

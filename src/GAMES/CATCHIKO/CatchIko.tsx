@@ -1,7 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import './cathIko.css'
+import GameWon from "../../MAIN/GameWon/GameWon";
 
-export default function CatchIko() {
+interface Props {
+    lineOfGames: (numberRandom: number) => void
+}
+
+const CatchIko: React.FC<Props> = ({ lineOfGames }) => {
     const ikoRef = useRef<HTMLDivElement>(null);
     const flashlightRef = useRef<HTMLDivElement>(null)
 
@@ -43,7 +48,7 @@ export default function CatchIko() {
             <div
                 className="CatchIko__iko"
                 ref={ikoRef}
-                onClick={() => alert('JUEGO GANADO')}
+                onClick={() => {lineOfGames(Math.floor(Math.random() * 7))}}
                 style={{
                     top: `${ikoPosition.y}px`,
                     left: `${ikoPosition.x}px`,
@@ -52,3 +57,5 @@ export default function CatchIko() {
         </main>
     );
 }
+
+export default CatchIko;

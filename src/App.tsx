@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Home from './MAIN/Home/Home';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import Home from './MAIN/Home/Home';
+
 
 export default function App() {
 

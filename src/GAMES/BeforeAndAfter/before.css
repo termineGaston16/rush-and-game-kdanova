@@ -1,0 +1,62 @@
+.Before {
+    position: fixed;
+
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    animation: newBackgraound 3s ease-in-out;
+
+}
+
+.Before__container__icon {
+    width: 90vw;
+    height: 100%;
+
+    color: rgba(255, 255, 255, 0.215);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    animation: girar 1s ease-in-out infinite;
+}
+
+.Before__container__count{
+    position: absolute;
+
+    font-size: 50px;
+    text-shadow: 0px 0px 10px white;
+}
+
+@keyframes newBackgraound {
+    0% {
+        background-color: none;
+    }
+
+    100% {
+        background-color: rgb(12, 12, 12);
+    }
+}
+
+@keyframes girar {
+    0% {
+        transform: scale(1);
+    }
+
+    50%{
+        transform: scale(.3);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}

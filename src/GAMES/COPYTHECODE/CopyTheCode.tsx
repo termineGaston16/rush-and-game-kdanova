@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import { FaCheck } from "react-icons/fa";
 import './copyTheCode.css';
 
-export default function CopyTheCode() {
+interface Props {
+    lineOfGames: (numberRandom: number) => void
+}
+
+const CopyTheCode: React.FC<Props> =({lineOfGames})=> {
     const [newCode, setNewCode] = useState<string>('');
     const [showError, setShowError] = useState<boolean>(false);
 
@@ -20,7 +24,7 @@ export default function CopyTheCode() {
         const code = new FormData(e.currentTarget).get('codeByUser') as string;
 
         if (code === newCode) {
-            alert('¡JUEGO GANADO!');
+            lineOfGames(Math.floor(Math.random() * 7))
         } else {
             setShowError(true);
         }
@@ -42,3 +46,5 @@ export default function CopyTheCode() {
         </main>
     );
 }
+
+export default CopyTheCode;

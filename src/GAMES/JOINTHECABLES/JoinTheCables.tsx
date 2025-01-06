@@ -3,7 +3,11 @@ import './joinTheCables.css'
 import { Cable } from '../../INTERFACES/types';
 import CanvasJoinTheCables from './CanvasJoinTheCables';
 
-export default function JoinTheCables() {
+interface Props {
+    lineOfGames: (numberRandom: number) => void
+}
+
+const JoinTheCables:React.FC<Props> =({lineOfGames})=>{
     const [firstCables, setFirstCables] = useState<number[]>([1, 2, 3, 4]);
     const [secondsCables, setSecondsCables] = useState<number[]>([1, 2, 3, 4]);
     const [verification, setVerification] = useState<number[]>([0, 0, 0, 0])
@@ -91,7 +95,7 @@ export default function JoinTheCables() {
         const newArray = cableGrabbedData.filter(cable => cable.cableConnected)
         setCableGrabbedData(newArray)
 
-        if (verification.every(cable => cable === 1)) alert('¡JUEGO GANADO!')
+        if (verification.every(cable => cable === 1)) lineOfGames(Math.floor(Math.random() * 7))
     }
 
     function mezclarArray(cables: number[]) {
@@ -161,3 +165,5 @@ export default function JoinTheCables() {
         </main>
     );
 }
+
+export default JoinTheCables;
