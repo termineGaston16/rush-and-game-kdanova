@@ -5,7 +5,7 @@
     left: 0px;
     width: 100vw;
     height: 100vh;
-    z-index: 2;
+    z-index: 1000 !important;
 
     display: flex;
     align-items: center;

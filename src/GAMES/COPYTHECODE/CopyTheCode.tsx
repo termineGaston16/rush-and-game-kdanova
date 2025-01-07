@@ -4,9 +4,10 @@ import './copyTheCode.css';
 
 interface Props {
     lineOfGames: (numberRandom: number) => void
+    timeBeforeLosing: NodeJS.Timeout
 }
 
-const CopyTheCode: React.FC<Props> =({lineOfGames})=> {
+const CopyTheCode: React.FC<Props> = ({ lineOfGames, timeBeforeLosing }) => {
     const [newCode, setNewCode] = useState<string>('');
     const [showError, setShowError] = useState<boolean>(false);
 
@@ -24,6 +25,7 @@ const CopyTheCode: React.FC<Props> =({lineOfGames})=> {
         const code = new FormData(e.currentTarget).get('codeByUser') as string;
 
         if (code === newCode) {
+            clearTimeout(timeBeforeLosing)
             lineOfGames(Math.floor(Math.random() * 7))
         } else {
             setShowError(true);
@@ -38,7 +40,7 @@ const CopyTheCode: React.FC<Props> =({lineOfGames})=> {
                 {newCode}
             </span>
             <form className="CopyTheCode__form" onSubmit={(e) => validateCode(e)}>
-                <input className="CopyTheCode__form__input" type="text" name="codeByUser" autoFocus/>
+                <input className="CopyTheCode__form__input" type="text" name="codeByUser" autoFocus />
                 <button className="CopyTheCode__form__btn" type="submit">
                     <FaCheck />
                 </button>

@@ -2,7 +2,7 @@ import { FaPlayCircle } from "react-icons/fa";
 import { HiQuestionMarkCircle } from "react-icons/hi";
 import LogoCompleto from '../../../public/logo(sinfondo)-completo.png'
 import './home.css'
-import { ReactNode, useState } from "react";
+import { ReactNode, useRef, useState } from "react";
 import HowToPlay from "../HowToPlay/HowToPlay";
 import { GiDiamonds } from "react-icons/gi";
 import CatchIko from "../../GAMES/CATCHIKO/CatchIko";
@@ -13,6 +13,8 @@ import MemoryGame from "../../GAMES/MEMORYGAME/MemoryGame";
 import QuickTimeEvent from "../../GAMES/QUICKTIMEEVENT/QuickTimeEvent";
 import RotateTheTriangle from "../../GAMES/ROTATETHETRIANGULE/RotateTheTriangle";
 import GameWon from "../GameWon/GameWon";
+import Before from "../../GAMES/BeforeAndAfter/Before";
+import After from "../../GAMES/BeforeAndAfter/After";
 
 
 export default function Home() {
@@ -23,74 +25,142 @@ export default function Home() {
 
     const [showLocalScore, setShowLocalScore] = useState<number>(0.0)
 
-    const [timeLimit, setTimeLimit] = useState<number>(60)
-    const [gamesWon, setGamesWon] = useState<number>(0)
+    const timeLimitRef = useRef<number>(60000)
+    const gamesPlayedRef = useRef<number>(0)
 
     const [showGame, setShowGame] = useState<ReactNode | null>(null)
     const [showCurrentGameTitle, setShowCurrentGameTitle] = useState<string | undefined>(undefined)
     const [gameOvercome, setGameOvercome] = useState<boolean>(false)
-
+    const numberRandomLast = useRef<number>(0)
+    const timerRef = useRef<NodeJS.Timeout>(null)
 
     const lineOfGames = (numberRandom: number) => {
+        let number = numberRandom
+        while (number === numberRandomLast.current) {
+            number = Math.floor(Math.random() * 7)
+        }
+        numberRandomLast.current = number
 
-        // if (gamesWon <= 0) <Befeore></Befeore>
+        if (timerRef.current) clearTimeout(timerRef.current)
+        const timeBeforeLosing = setTimeout(() => {
+            setShowGame(<After
+                gamesPlayedRef={gamesPlayedRef.current}
+                showLocalScore={showLocalScore}
+                setShowGame={setShowGame}
+            />)
+
+            setShowCurrentGameTitle(undefined)
+            timeLimitRef.current = 60000
+            gamesPlayedRef.current = 0
+            
+        }, timeLimitRef.current);
+        timerRef.current = timeBeforeLosing
+
+        if (gamesPlayedRef.current <= 0) {
+            setShowGame(<Before />);
+            gamesPlayedRef.current = 0
+
+            setTimeout(() => {
+                continueGameLogic(number, timeBeforeLosing);
+            }, 3000);
+        } else {
+            continueGameLogic(number, timeBeforeLosing);
+        }
+    };
+
+    const continueGameLogic = (numberRandom: number, timeBeforeLosing: NodeJS.Timeout) => {
 
         switch (numberRandom) {
             case 0:
                 setGameOvercome(true)
+                setTimeout(() => { setGameOvercome(false) }, 3000)
 
                 setShowCurrentGameTitle('¡Atrapa a Iko!');
-                setShowGame(<CatchIko lineOfGames={lineOfGames} />);
+                setShowGame(<CatchIko
+                    lineOfGames={lineOfGames}
+                    timeBeforeLosing={timeBeforeLosing}
+                />);
 
-                setTimeout(() => { setGameOvercome(false) }, 3000)
+                gamesPlayedRef.current += 1
+                timeLimitRef.current -= 500
                 break;
             case 1:
                 setGameOvercome(true)
+                setTimeout(() => { setGameOvercome(false) }, 3000)
 
                 setShowCurrentGameTitle('¡Sigue el Ritmo!');
-                setShowGame(<Colors lineOfGames={lineOfGames} />);
+                setShowGame(<Colors
+                    lineOfGames={lineOfGames}
+                    timeBeforeLosing={timeBeforeLosing}
+                />);
 
-                setTimeout(() => { setGameOvercome(false) }, 3000)
+                gamesPlayedRef.current += 1
+                timeLimitRef.current -= 500
                 break;
             case 2:
                 setGameOvercome(true)
+                setTimeout(() => { setGameOvercome(false) }, 3000)
 
                 setShowCurrentGameTitle('¡Copia el Código!');
-                setShowGame(<CopyTheCode lineOfGames={lineOfGames} />);
+                setShowGame(<CopyTheCode
+                    lineOfGames={lineOfGames}
+                    timeBeforeLosing={timeBeforeLosing}
+                />);
 
-                setTimeout(() => { setGameOvercome(false) }, 3000)
+                gamesPlayedRef.current += 1
+                timeLimitRef.current -= 500
                 break;
             case 3:
                 setGameOvercome(true)
+                setTimeout(() => { setGameOvercome(false) }, 3000)
 
                 setShowCurrentGameTitle('¡Une los Cables!');
-                setShowGame(<JoinTheCables lineOfGames={lineOfGames} />);
+                setShowGame(<JoinTheCables
+                    lineOfGames={lineOfGames}
+                    timeBeforeLosing={timeBeforeLosing}
+                />);
 
-                setTimeout(() => { setGameOvercome(false) }, 3000)
+                gamesPlayedRef.current += 1
+                timeLimitRef.current -= 500
                 break;
             case 4:
                 setGameOvercome(true)
+                setTimeout(() => { setGameOvercome(false) }, 3000)
 
                 setShowCurrentGameTitle('¡Completa el juego de memoria!');
-                setShowGame(<MemoryGame lineOfGames={lineOfGames} />);
+                setShowGame(<MemoryGame
+                    lineOfGames={lineOfGames}
+                    timeBeforeLosing={timeBeforeLosing}
+                />);
 
-                setTimeout(() => { setGameOvercome(false) }, 3000)
+                gamesPlayedRef.current += 1
+                timeLimitRef.current -= 500
                 break;
             case 5:
                 setGameOvercome(true)
+                setTimeout(() => { setGameOvercome(false) }, 3000)
 
                 setShowCurrentGameTitle('¡Presiona los botones indicados!');
-                setShowGame(<QuickTimeEvent lineOfGames={lineOfGames} />);
+                setShowGame(<QuickTimeEvent
+                    lineOfGames={lineOfGames}
+                    timeBeforeLosing={timeBeforeLosing}
+                />);
 
-                setTimeout(() => { setGameOvercome(false) }, 3000)
+                gamesPlayedRef.current += 1
+                timeLimitRef.current -= 500
                 break;
             case 6:
                 setGameOvercome(true)
+                setTimeout(() => { setGameOvercome(false) }, 3000)
 
                 setShowCurrentGameTitle('¡Gira el Triángulo!');
-                setShowGame(<RotateTheTriangle lineOfGames={lineOfGames} />);
+                setShowGame(<RotateTheTriangle
+                    lineOfGames={lineOfGames}
+                    timeBeforeLosing={timeBeforeLosing}
+                />);
 
-                setTimeout(() => { setGameOvercome(false) }, 3000)
+                gamesPlayedRef.current += 1
+                timeLimitRef.current -= 500
                 break;
             default:
                 console.warn("Número aleatorio fuera del rango esperado.");
@@ -100,13 +170,18 @@ export default function Home() {
 
     return (<main
         className="Home">
+
         {showCurrentGameTitle &&
             <div className="showCurrentGameTitle">
                 <span className="showCurrentGameTitle__title">{showCurrentGameTitle}</span>
-                <div className="showCurrentGameTitle__timeBar"></div>
+                <div
+                    key={timeLimitRef.current}
+                    style={{ animation: `timeBar ${timeLimitRef.current / 1000}s linear` }}
+                    className="showCurrentGameTitle__timeBar"></div>
             </div>}
         {showGame && showGame}
         {gameOvercome && <GameWon setShowLocalScore={setShowLocalScore} />}
+
 
         <span className="Home__copyright">KDA/NOVA 2024</span>
         <img className="Home__logo" src={LogoCompleto} alt="rush-and-game-logo" loading="lazy" />

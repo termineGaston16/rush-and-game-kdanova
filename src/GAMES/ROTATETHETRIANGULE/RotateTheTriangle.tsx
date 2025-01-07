@@ -5,9 +5,10 @@ import './rotateTheTriangle.css';
 
 interface Props {
     lineOfGames: (numberRandom: number) => void
+    timeBeforeLosing: NodeJS.Timeout
 }
 
-const RotateTheTriangle: React.FC<Props> =({lineOfGames})=> {
+const RotateTheTriangle: React.FC<Props> = ({ lineOfGames, timeBeforeLosing }) => {
     const [rotationA, setRotationA] = useState<number>(Math.floor(Math.random() * 350));
     const [rotationB, setRotationB] = useState<number>(Math.floor(Math.random() * 350));
     const divRef = useRef<HTMLDivElement>(null);
@@ -40,7 +41,8 @@ const RotateTheTriangle: React.FC<Props> =({lineOfGames})=> {
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         if (isDragging.current) {
 
-            if(rotationB >= -2 && rotationB <= 2){
+            if (rotationB >= -2 && rotationB <= 2) {
+                clearTimeout(timeBeforeLosing)
                 lineOfGames(Math.floor(Math.random() * 7))
                 return
             }
@@ -79,7 +81,7 @@ const RotateTheTriangle: React.FC<Props> =({lineOfGames})=> {
                     onMouseDown={handleMouseDown}
                     onMouseMove={handleMouseMove}
                     onMouseUp={handleMouseUp}
-                ><FaArrowsRotate className='handlebar-component__handlebar__icon'/></div>
+                ><FaArrowsRotate className='handlebar-component__handlebar__icon' /></div>
             </section>
         </main>
     );

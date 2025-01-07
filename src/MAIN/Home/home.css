@@ -190,8 +190,6 @@
 
     background: linear-gradient(to right, red, yellow, green);
     border: 1px solid white;
-
-    animation: timeBar 60s linear;
 }
 
 

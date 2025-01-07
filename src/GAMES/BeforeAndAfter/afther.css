@@ -1,0 +1,86 @@
+.After{
+    width: 100vw;
+    height: 100vh;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+
+    background-color: rgba(0, 0, 0, 0.612);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    text-align: center;
+    gap: 10px;
+}
+
+.After__title{
+    font-size: clamp(7px, 2.5vw, 30px);
+    font-style: italic;
+    animation: title_shadow 4s steps(1) infinite;
+}
+
+@keyframes title_shadow {
+    0%{
+        text-shadow: 5px 5px 0px black;
+    }
+    40%{
+        text-shadow: 5px 5px 0px black;
+    }
+    50%{
+        text-shadow: -5px -5px 0px aqua;
+    }
+    55%{
+        text-shadow: -4px 1px 0px rgb(146, 242, 36);
+    }
+    60%{
+        text-shadow: 5px -10px 0px rgb(200, 23, 249);
+    }
+    61%{
+        text-shadow: 5px 5px 0px black;
+    }
+    100%{
+        text-shadow: 5px 5px 0px black;
+    }
+}
+
+.After__score-box{
+    width: clamp(250px, 20vw, 400px);
+    aspect-ratio: 1/1;
+
+    background-color: rgba(0, 0, 0, 0.879);
+    border-radius: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.After__score-box__games-count, .After__score-box__new-score{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.puntaje{
+    color: rgb(255, 166, 0);
+}
+
+.After__btn-menu{
+    background: none;
+    border: none;
+
+    color: white;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 14px;
+    text-decoration: overline underline;
+    cursor: pointer;
+}
+
+
+

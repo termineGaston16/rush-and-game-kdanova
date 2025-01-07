@@ -3,13 +3,14 @@ import './memoryGame.css'
 
 interface Props {
     lineOfGames: (numberRandom: number) => void
+    timeBeforeLosing: NodeJS.Timeout
 }
 
-const MemoryGame: React.FC<Props> =({lineOfGames})=> {
+const MemoryGame: React.FC<Props> = ({ lineOfGames, timeBeforeLosing }) => {
 
     const [clickcounter, setClickcounter] = useState<0 | 1>(0)
     const [isClickable, setIsClickable] = useState<boolean>(true);
-    const [previousValue, setPreviousValue] = useState<{ value: string, index: number}>({
+    const [previousValue, setPreviousValue] = useState<{ value: string, index: number }>({
         index: 0,
         value: ''
     })
@@ -91,7 +92,10 @@ const MemoryGame: React.FC<Props> =({lineOfGames})=> {
     }, [])
 
     useEffect(() => {
-        if (itemsFound.size === 4) lineOfGames(Math.floor(Math.random() * 7))
+        if (itemsFound.size === 4) {
+            clearTimeout(timeBeforeLosing)
+            lineOfGames(Math.floor(Math.random() * 7))
+        }
     }, [itemsFound])
 
 

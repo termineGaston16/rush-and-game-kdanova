@@ -5,9 +5,10 @@ import CanvasJoinTheCables from './CanvasJoinTheCables';
 
 interface Props {
     lineOfGames: (numberRandom: number) => void
+    timeBeforeLosing: NodeJS.Timeout
 }
 
-const JoinTheCables:React.FC<Props> =({lineOfGames})=>{
+const JoinTheCables: React.FC<Props> = ({ lineOfGames, timeBeforeLosing }) => {
     const [firstCables, setFirstCables] = useState<number[]>([1, 2, 3, 4]);
     const [secondsCables, setSecondsCables] = useState<number[]>([1, 2, 3, 4]);
     const [verification, setVerification] = useState<number[]>([0, 0, 0, 0])
@@ -95,22 +96,25 @@ const JoinTheCables:React.FC<Props> =({lineOfGames})=>{
         const newArray = cableGrabbedData.filter(cable => cable.cableConnected)
         setCableGrabbedData(newArray)
 
-        if (verification.every(cable => cable === 1)) lineOfGames(Math.floor(Math.random() * 7))
+        if (verification.every(cable => cable === 1)) {
+            clearTimeout(timeBeforeLosing)
+            lineOfGames(Math.floor(Math.random() * 7))
+        }
     }
 
     function mezclarArray(cables: number[]) {
         const copia = [...cables]; // Crear una copia para evitar mutar el original
         for (let i = copia.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1)); // Elegir un índice al azar
-          [copia[i], copia[j]] = [copia[j], copia[i]]; // Intercambiar elementos
+            const j = Math.floor(Math.random() * (i + 1)); // Elegir un índice al azar
+            [copia[i], copia[j]] = [copia[j], copia[i]]; // Intercambiar elementos
         }
         return copia;
-      }
-      
-      useEffect(() => {
-        setFirstCables(mezclarArray(firstCables)); 
+    }
+
+    useEffect(() => {
+        setFirstCables(mezclarArray(firstCables));
         setSecondsCables(mezclarArray(secondsCables))
-      }, []); 
+    }, []);
 
     return (
         <main

@@ -3,16 +3,21 @@ import './colors.css'
 
 interface Props {
     lineOfGames: (numberRandom: number) => void
+    timeBeforeLosing: NodeJS.Timeout
 }
 
-const Colors: React.FC<Props> = ({ lineOfGames }) => {
+const Colors: React.FC<Props> = ({ lineOfGames, timeBeforeLosing }) => {
 
     const tableRef = useRef<HTMLUListElement>(null)
     const [rhythm, setRhythm] = useState<number[]>([])
     const [playerRhythm, setPlayerRhythm] = useState<number[]>([])
 
     const createRhythm = () => {
-        if (rhythm.length >= 3) return lineOfGames(Math.floor(Math.random() * 7))
+        if (rhythm.length >= 3) {
+            clearTimeout(timeBeforeLosing)
+            lineOfGames(Math.floor(Math.random() * 7))
+            return
+        }
 
         setRhythm(prevArray => [...prevArray, Math.floor(Math.random() * 4)])
     }

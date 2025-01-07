@@ -3,9 +3,10 @@ import './quickTimeEvent.css'
 
 interface Props {
     lineOfGames: (numberRandom: number) => void
+    timeBeforeLosing: NodeJS.Timeout
 }
 
-const QuickTimeEvent: React.FC<Props>=({lineOfGames})=> {
+const QuickTimeEvent: React.FC<Props> = ({ lineOfGames, timeBeforeLosing }) => {
 
     const [lettersToAppreciate, setLettersToAppreciate] = useState<{
         key: string,
@@ -49,9 +50,9 @@ const QuickTimeEvent: React.FC<Props>=({lineOfGames})=> {
         if (lettersToAppreciate.length < 1) return
 
         setTimeout(() => {
-           if(!lettersPrecionadas.current[indexLetter]){
-            alert('fin del juego')
-           }
+            if (!lettersPrecionadas.current[indexLetter]) {
+                alert('fin del juego')
+            }
         }, 5000);
 
         setIndexLetter(prevItem => ++prevItem)
@@ -69,7 +70,8 @@ const QuickTimeEvent: React.FC<Props>=({lineOfGames})=> {
             lettersPrecionadas.current[indexKeyPress] = true
             setLettersToAppreciate(newArray)
 
-            if(!lettersPrecionadas.current.some(letter => !letter)){
+            if (!lettersPrecionadas.current.some(letter => !letter)) {
+                clearTimeout(timeBeforeLosing)
                 lineOfGames(Math.floor(Math.random() * 7))
             }
         }

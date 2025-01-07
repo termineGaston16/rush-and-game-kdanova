@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import './cathIko.css'
-import GameWon from "../../MAIN/GameWon/GameWon";
 
 interface Props {
     lineOfGames: (numberRandom: number) => void
+    timeBeforeLosing: NodeJS.Timeout
 }
 
-const CatchIko: React.FC<Props> = ({ lineOfGames }) => {
+const CatchIko: React.FC<Props> = ({ lineOfGames, timeBeforeLosing }) => {
     const ikoRef = useRef<HTMLDivElement>(null);
     const flashlightRef = useRef<HTMLDivElement>(null)
 
@@ -48,7 +48,10 @@ const CatchIko: React.FC<Props> = ({ lineOfGames }) => {
             <div
                 className="CatchIko__iko"
                 ref={ikoRef}
-                onClick={() => {lineOfGames(Math.floor(Math.random() * 7))}}
+                onClick={() => {
+                    clearTimeout(timeBeforeLosing)
+                    lineOfGames(Math.floor(Math.random() * 7))
+                }}
                 style={{
                     top: `${ikoPosition.y}px`,
                     left: `${ikoPosition.x}px`,
