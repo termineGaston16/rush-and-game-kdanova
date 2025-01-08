@@ -40,7 +40,7 @@ const CopyTheCode: React.FC<Props> = ({ lineOfGames, timeBeforeLosing }) => {
                 {newCode}
             </span>
             <form className="CopyTheCode__form" onSubmit={(e) => validateCode(e)}>
-                <input className="CopyTheCode__form__input" type="text" name="codeByUser" autoFocus />
+                <input autoComplete="off" className="CopyTheCode__form__input" type="text" name="codeByUser" autoFocus />
                 <button className="CopyTheCode__form__btn" type="submit">
                     <FaCheck />
                 </button>

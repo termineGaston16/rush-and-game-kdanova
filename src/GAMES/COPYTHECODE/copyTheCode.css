@@ -14,7 +14,7 @@
     left: 0px;
     z-index: 99;
 
-    background: url('../../../public/wallpaper-catch_iko.png');
+    background: url('../../../public/wallpaper-CopyTheCode.png');
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -40,6 +40,7 @@
     color: rgb(38, 38, 38);
 
     transition: .3s;
+    user-select: none;
 }
 
 
@@ -101,13 +102,14 @@
     border: none;
     color: rgb(205, 205, 205);
     font-size: clamp(20px, 1vw, 50px);
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Courier New', Courier, monospace; 
 }
 
 .CopyTheCode__form__btn{
     color: white;
     background: radial-gradient(circle at 80% 10%, rgb(141, 232, 141), rgb(32, 171, 1));
     border: 1px solid white;
+    min-width: 50px;
 }
 
 .CopyTheCode__form::before{
@@ -121,6 +123,6 @@
     content: "Puedes pulsar [ Enter ] para validar ^^";
     position: absolute;
     font-size: clamp(15px, 0.2vw, 30px);
-    color: rgb(174, 174, 174);
+    color: rgb(224, 224, 224);
     bottom: -40px;
 }
