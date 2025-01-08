@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import './memoryGame.css'
 
 interface Props {
@@ -6,107 +6,115 @@ interface Props {
     timeBeforeLosing: NodeJS.Timeout
 }
 
-const MemoryGame: React.FC<Props> = ({ lineOfGames, timeBeforeLosing }) => {
+const MemoryGame: React.FC<Props> = ({lineOfGames, timeBeforeLosing}) => {
 
-    const [clickcounter, setClickcounter] = useState<0 | 1>(0)
-    const [isClickable, setIsClickable] = useState<boolean>(true);
-    const [previousValue, setPreviousValue] = useState<{ value: string, index: number }>({
-        index: 0,
-        value: ''
-    })
-    const [itemsFound, setItemsFound] = useState<Set<string>>(new Set());
+    const fileOneRef = useRef<string | null>(null)
+    const fileTwoRef = useRef<string | null>(null)
 
-    const [board, setBoard] = useState<string[]>([
+    const tableRef = useRef<HTMLUListElement>(null)
+    const counterToWinRef = useRef<number>(0)
+
+    const [originalBoard, setOriginalBoard] = useState<string[]>([
         '©', '©', '⁂',
         '⁂', 'Ⅵ', 'Ⅵ',
         'N', 'N', 'Ω'
     ])
 
-    const [tebleroHidden, setTebleroHidden] = useState<string[]>([
-        '¿?', '¿?', '¿?',
-        '¿?', '¿?', '¿?',
-        '¿?', '¿?', '¿?'
-    ])
+    const [hiddenBoard, setHiddenBoard] = useState<string[]>(Array(9).fill('¿?'));
 
-    const flipLetter = (indexOfTheCharter: number) => {
+    const flipFicha = (indexOfTheFile: number) => {
 
-        switch (clickcounter) {
-            case 0:
-                setClickcounter(1)
-                setPreviousValue({
-                    index: indexOfTheCharter,
-                    value: board[indexOfTheCharter]
-                })
-                break;
+        if (hiddenBoard[indexOfTheFile] === '¿?') {
 
-            case 1:
+            if (!fileOneRef.current) {
+                fileOneRef.current = originalBoard[indexOfTheFile]
 
-                if (board[indexOfTheCharter] === previousValue.value) {
-                    setItemsFound((prevArray) => {
-                        const updatedSet = new Set(prevArray);
-                        updatedSet.add(board[indexOfTheCharter]);
-                        return updatedSet;
-                    });
+                const newArray = structuredClone(hiddenBoard)
+                newArray[indexOfTheFile] = originalBoard[indexOfTheFile]
+                setHiddenBoard(newArray);
 
+                (tableRef.current?.children[indexOfTheFile] as HTMLElement).style.transform = 'rotateY(360deg)'
 
-                    const newArray = structuredClone(tebleroHidden)
-                    newArray[indexOfTheCharter] = board[indexOfTheCharter]
-                    newArray[previousValue.index] = previousValue.value
-                    setTebleroHidden(newArray)
-                    setClickcounter(0)
+                return
+            }
 
-                } else {
-                    setIsClickable(false)
+            if (!fileTwoRef.current) {
+                fileTwoRef.current = originalBoard[indexOfTheFile]
 
-                    setTimeout(() => {
-                        const newArray = structuredClone(tebleroHidden)
-                        newArray[indexOfTheCharter] = '¿?'
-                        newArray[previousValue.index] = '¿?'
-                        setTebleroHidden(newArray)
-                        setClickcounter(0)
-                        setIsClickable(true)
-                    }, 700)
+                const newArray = structuredClone(hiddenBoard)
+                newArray[indexOfTheFile] = originalBoard[indexOfTheFile]
+                setHiddenBoard(newArray);
 
+                (tableRef.current?.children[indexOfTheFile] as HTMLElement).style.transform = 'rotateY(360deg)'
+            }
+
+            if (fileOneRef.current && fileOneRef.current && fileOneRef.current === fileTwoRef.current) {
+                const fileOne = fileOneRef.current;
+                const fileTwo = fileTwoRef.current;
+
+                setTimeout(() => {
+                    setHiddenBoard(prevArray =>
+                        prevArray.map((item, index) => {
+                            if (item === fileOne || item === fileTwo) {
+                                (tableRef.current?.children[index] as HTMLElement).style.background = 'radial-gradient(circle at 60% 20%, rgba(254, 103, 21, 0.56), rgb(196, 196, 65))';
+                                (tableRef.current?.children[index] as HTMLElement).style.border = '1px solid red';
+                                (tableRef.current?.children[index] as HTMLElement).style.color = 'aqua';
+                                (tableRef.current?.children[index] as HTMLElement).style.textShadow = '0px 0px 10px aqua';
+                            }
+                            return item;
+                        })
+                    );
+                }, 300);
+
+                counterToWinRef.current += 1
+                fileOneRef.current = null;
+                fileTwoRef.current = null;
+
+                if (counterToWinRef.current >= 4) {
+                    clearTimeout(timeBeforeLosing)
+                    lineOfGames(Math.floor(Math.random() * 7))
                 }
-                break;
 
-            default:
-                break;
+                return
+            } else {
+                const fileOne = fileOneRef.current;
+                const fileTwo = fileTwoRef.current;
+
+                setTimeout(() => {
+                    setHiddenBoard(prevArray => prevArray.map((item, index) => {
+                        if (item === fileOne || item === fileTwo) {
+                            (tableRef.current?.children[index] as HTMLElement).style.transform = 'rotateY(-360deg)';
+                            return '¿?';
+                        } else {
+                            return item;
+                        }
+                    }));
+                }, 500);
+
+                fileOneRef.current = null;
+                fileTwoRef.current = null;
+                return
+            }
+
         }
-
-
-        const newArray = structuredClone(tebleroHidden)
-        newArray[indexOfTheCharter] = board[indexOfTheCharter]
-        setTebleroHidden(newArray)
-    }
-
-    function shuffleArray(array: string[]): string[] {
-        return array
-            .map(value => ({ value, sort: Math.random() }))
-            .sort((a, b) => a.sort - b.sort)
-            .map(({ value }) => value);
     }
 
     useEffect(() => {
-        setBoard(shuffleArray(board))
-    }, [])
-
-    useEffect(() => {
-        if (itemsFound.size === 4) {
-            clearTimeout(timeBeforeLosing)
-            lineOfGames(Math.floor(Math.random() * 7))
-        }
-    }, [itemsFound])
-
+        const shuffledBoard = [...originalBoard].sort(() => Math.random() - 0.5);
+        setOriginalBoard(shuffledBoard);
+      }, []);
 
     return (<main className="MemoryGame">
-        <ul className="MemoryGame__list">
-            {tebleroHidden.map((item, index) => (
+        <ul
+            ref={tableRef}
+            className="MemoryGame__list">
+            {hiddenBoard.map((item, index) => (
                 <li
-                    style={{ pointerEvents: isClickable ? 'auto' : 'none' }}
-                    onClick={() => flipLetter(index)}
+                    id={index.toString()}
+                    onClick={() => flipFicha(index)}
                     className="MemoryGame__list__item"
                     key={index}>
+
                     <span>{item}</span>
                 </li>
             ))}
