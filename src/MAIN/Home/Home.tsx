@@ -69,7 +69,7 @@ export default function Home() {
 
     const continueGameLogic = (numberRandom: number, timeBeforeLosing: NodeJS.Timeout) => {
 
-        switch (5) {
+        switch (6) {
             case 0:
                 setGameOvercome(true)
                 setTimeout(() => { setGameOvercome(false) }, 3000)

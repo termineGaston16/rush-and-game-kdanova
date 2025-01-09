@@ -41,7 +41,7 @@ const RotateTheTriangle: React.FC<Props> = ({ lineOfGames, timeBeforeLosing }) =
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         if (isDragging.current) {
 
-            if (rotationB >= -2 && rotationB <= 2) {
+            if (rotationB >= -2 && rotationB <= 2 || rotationB >= 355 && rotationB <= 366) {
                 clearTimeout(timeBeforeLosing)
                 lineOfGames(Math.floor(Math.random() * 7))
                 return

@@ -13,7 +13,7 @@
     left: 0px;
     z-index: 99;
 
-    background: url('../../../public/wallpaper-catch_iko.png');
+    background: url('../../../public/wallpaper-RotateTheTriangle.png');
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -21,7 +21,7 @@
 
 .rotateTheTriangle__component-of-the-triangle{
     position: relative;
-    width: clamp(200px, 30vw, 400px);
+    width: 200px;
     aspect-ratio: 1/1;
 
     background: radial-gradient(circle at 60% 20%, rgb(69, 69, 69), rgb(54, 54, 54));
@@ -34,7 +34,7 @@
 }
 
 .handlebar-component{
-    width: clamp(200px, 20vw, 400px);
+    width: 200px;
     aspect-ratio: 1/1;
     background: radial-gradient(circle at 10% 50%, rgb(39, 39, 39), rgb(20, 20, 20));
     border: 1px solid white;
