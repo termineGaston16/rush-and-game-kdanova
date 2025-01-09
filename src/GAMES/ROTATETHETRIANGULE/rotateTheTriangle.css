@@ -53,7 +53,7 @@
 .rotateTheTriangle__component-of-the-triangle__edge-of-the-circle, .rotateTheTriangle__component-of-the-triangle__edge-of-the-circle__triangle, .handlebar-component__handlebar{
     width: 90%;
     aspect-ratio: 1/1;
-    border-radius: 100rem;
+    border-radius: 50%;
     background-color: rgb(1, 7, 15);
     position: relative;
 

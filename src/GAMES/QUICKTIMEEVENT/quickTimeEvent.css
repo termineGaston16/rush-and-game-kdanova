@@ -7,74 +7,116 @@
     justify-content: center;
     flex-direction: column;
 
-    position: absolute;
-    top: 0px;
-    left: 0px;
     z-index: 99;
-
-    background: url('../../../public/wallpaper-catch_iko.png');
+    position: fixed;
+    background-image: url('../../../public/wallpaper-QuickTimeEvent.png');
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
 }
 
 .QuickTimeEvent__list {
+    width: clamp(250px, 70vw, 720px);
+    aspect-ratio: 16/9;
     position: relative;
 
+    background-color: rgba(0, 0, 0, 0.577);
     border: 1px solid white;
-    background: radial-gradient(circle at 40% 60%, rgb(106, 106, 106), rgb(39, 39, 39));
-    width: clamp(200px, 90vw, 1000px);
-    aspect-ratio: 16/9;
+    border-radius: 20px;
 
+    display: flex;
     list-style: none;
 
 }
 
 .QuickTimeEvent__list__item {
-    border: 1px solid white;
+    position: absolute;
 
-    width: clamp(50px, 10vw, 100px);
+    width: 60px;
     aspect-ratio: 1/1;
-    border-radius: 1rem;
+
+    border: 1px solid white;
+    border-radius: 50%;
 
     display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
+    flex-direction: column;
+    background: radial-gradient(circle at 30% 50%, rgb(61, 61, 61), rgb(18, 18, 18));
 
-    background: radial-gradient(circle at 30% 60%, rgb(55, 55, 55), rgb(42, 42, 42));
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    font-size: clamp(14px, 3vw, 40px);
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 30px;
+    font-weight: 100;
+    color: rgb(189, 254, 232);
+    text-shadow: 0px 0px 10px white;
     transition: .3s;
-    pointer-events: none;
 }
-
 
 .QuickTimeEvent__list__item::before {
     content: '';
-
     position: absolute;
-    width: 90%;
-    height: 10px;
-
-    background-color: red;
-    box-shadow: 0px 0px 10px red;
-    bottom: 10px;
-
-    animation: timeBar 5s linear forwards;
+    width: 130%;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    border: 6px solid red;
+    box-sizing: border-box;
+    animation: erase-border 4s linear reverse;
+    transform: rotate(-90deg);
 }
 
-@keyframes timeBar {
-    0%{
-        width: 90%;
+/* Animación para borrar el borde de izquierda a derecha */
+@keyframes erase-border {
+    0% {
+        clip-path: polygon(0% 0%, 0% 100%, 0% 100%, 0% 0%);
     }
-    100%{
-        width: 0%;
+
+    25% {
+        clip-path: polygon(0% 0%, 25% 0%, 25% 100%, 0% 100%);
+    }
+
+    50% {
+        clip-path: polygon(0% 0%, 50% 0%, 50% 100%, 0% 100%);
+    }
+
+    75% {
+        clip-path: polygon(0% 0%, 75% 0%, 75% 100%, 0% 100%);
+    }
+
+    100% {
+        clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
     }
 }
 
-.keyPress{
+
+@keyframes timeOfTheKey {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        display: none;
+    }
+}
+
+
+.keyPressed {
     transform: scale(1.1);
-    box-shadow: 0px 0px 1rem aqua;
-    opacity: 0;
+    box-shadow: 0px 0px 10px white;
+    border: 1px solid aqua;
+    color: aqua;
+    animation: keyPressedAnimation .3s ease-in forwards;
+}
+
+
+@keyframes keyPressedAnimation {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        display: none;
+    }
 }

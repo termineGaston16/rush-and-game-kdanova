@@ -1,103 +1,115 @@
-import { useEffect, useRef, useState } from "react"
+import { ReactNode, useEffect, useRef, useState } from "react"
 import './quickTimeEvent.css'
+import After from "../BeforeAndAfter/After"
 
 interface Props {
     lineOfGames: (numberRandom: number) => void
     timeBeforeLosing: NodeJS.Timeout
+    gamesPlayedRef: number
+    showLocalScore: number
+    setShowGame: React.Dispatch<React.SetStateAction<ReactNode>>
 }
 
-const QuickTimeEvent: React.FC<Props> = ({ lineOfGames, timeBeforeLosing }) => {
+const QuickTimeEvent: React.FC<Props> = ({ lineOfGames, timeBeforeLosing, setShowGame, gamesPlayedRef, showLocalScore }) => {
 
-    const [lettersToAppreciate, setLettersToAppreciate] = useState<{
-        key: string,
-        isPressed: boolean,
-        xPos: number,
-        yPos: number
-    }[]>([])
-    const lettersPrecionadas = useRef<boolean[]>([false, false, false, false, false])
-
-    const counter = useRef<number>(0)
-    const [indexLetter, setIndexLetter] = useState<number>(0)
-    const divRef = useRef<null | HTMLUListElement>(null)
-    const mainRef = useRef<HTMLElement | null>(null);
-
+    const mainRef = useRef<HTMLDivElement>(null)
+    const ulRef = useRef<HTMLUListElement>(null)
     useEffect(() => {
-        const interval = setInterval(() => {
-
-            setLettersToAppreciate(prevArray => ([...prevArray, {
-                isPressed: false,
-                key: String.fromCharCode(Math.floor(Math.random() * 26) + 65),
-                xPos: Math.floor(Math.random() * (divRef.current?.getBoundingClientRect().width! - 100)),
-                yPos: Math.floor(Math.random() * (divRef.current?.getBoundingClientRect().height! - 100)),
-            }]))
-
-            ++counter.current
-
-            if (counter.current >= 5) clearInterval(interval)
-
-        }, 1000)
-
-        // Enfoca automáticamente el contenedor al montar el componente
-        if (mainRef.current) {
-            mainRef.current.focus();
-        }
-
-        return () => clearInterval(interval)
+        if (mainRef.current) mainRef.current.focus()
     }, [])
 
+    const keysToTouchRef = useRef<string[]>((() => {
+        const array: string[] = [];
+        for (let index = 0; index < 5; index++) {
+            array.push(String.fromCharCode(Math.floor(Math.random() * 26) + 65));
+        }
+        return array;
+    })());
+    const xAndYPoss = useRef<{ xPos: number, yPos: number }[]>((() => {
 
-    useEffect(() => {
-        if (lettersToAppreciate.length < 1) return
+        const array: { xPos: number, yPos: number }[] = []
 
-        setTimeout(() => {
-            if (!lettersPrecionadas.current[indexLetter]) {
-                alert('fin del juego')
-            }
-        }, 5000);
+        for (let index = 0; index < 5; index++) {
+            array.push({
+                xPos: Math.floor(Math.random() * 100),
+                yPos: Math.floor(Math.random() * 100)
+            })
+        }
 
-        setIndexLetter(prevItem => ++prevItem)
-    }, [lettersToAppreciate])
+        return array;
+    })())
+    const [keysToDisplay, setKeysToDisplay] = useState<string[]>([])
 
+    const [indexKey, setIndexKey] = useState<number>(0)
+    const indexWhenAKeyIsPressedRef = useRef<number>(0)
+    const indexArrayPress = useRef<number>(0)
+    const timeBeforeLosingRef = useRef<NodeJS.Timeout[]>([])
 
-    const onKeyDownHandle = (e: React.KeyboardEvent<HTMLElement>) => {
+    const pressKey = (e: React.KeyboardEvent<HTMLElement>) => {
         const keyPress = e.key.toLocaleUpperCase()
 
-        const indexKeyPress = lettersToAppreciate.findIndex(letter => letter.key === keyPress && !letter.isPressed)
+        if (keysToTouchRef.current[0] === keyPress) {
+            keysToTouchRef.current.splice(0, 1);
+            (ulRef.current?.children[indexWhenAKeyIsPressedRef.current] as HTMLElement).classList.add('keyPressed')
 
-        if (indexKeyPress > -1) {
-            const newArray = structuredClone(lettersToAppreciate)
-            newArray[indexKeyPress].isPressed = true
-            lettersPrecionadas.current[indexKeyPress] = true
-            setLettersToAppreciate(newArray)
+            clearTimeout(timeBeforeLosingRef.current[indexWhenAKeyIsPressedRef.current])
+            indexWhenAKeyIsPressedRef.current += 1
+            indexArrayPress.current += 1
 
-            if (!lettersPrecionadas.current.some(letter => !letter)) {
+            if (keysToTouchRef.current.length <= 0) {
                 clearTimeout(timeBeforeLosing)
                 lineOfGames(Math.floor(Math.random() * 7))
             }
         }
+        return
     }
 
+    useEffect(() => {
+        const setTimeKey = setTimeout(() => {
+            setKeysToDisplay(prevArray => [...prevArray, keysToTouchRef.current[indexKey - indexArrayPress.current]])
+            setIndexKey(prevItem => prevItem += 1)
+
+            const timeBeforeLosing = setTimeout(() => {
+                setShowGame(<After
+                    gamesPlayedRef={gamesPlayedRef}
+                    showLocalScore={showLocalScore}
+                    setShowGame={setShowGame}
+                />)
+            }, 4000)
+            timeBeforeLosingRef.current.push(timeBeforeLosing)
+
+        }, 700)
+
+        if (indexKey >= 5) return clearTimeout(setTimeKey)
+
+        return () => clearTimeout(setTimeKey)
+            
+    }, [indexKey])
+
+    useEffect(()=>{
+        return ()=> timeBeforeLosingRef.current.forEach(timeOut => clearTimeout(timeOut))
+    },[])
+
     return (<main
-        ref={mainRef}
+        className="QuickTimeEvent"
         tabIndex={0}
-        onKeyDown={(e) => onKeyDownHandle(e)}
-        className="QuickTimeEvent">
-        <ul
-            ref={divRef}
-            className="QuickTimeEvent__list">
-            {lettersToAppreciate.map((letter, index) => (
+        ref={mainRef}
+        onKeyDown={(e) => pressKey(e)}>
+
+        <ul className="QuickTimeEvent__list"
+            ref={ulRef}>
+
+            {keysToDisplay.map((key, index) => (
                 <li
-                    className={`
-                        QuickTimeEvent__list__item
-                        ${letter.isPressed && 'keyPress'}
-                        `}
-                    style={{
-                        position: 'absolute',
-                        top: letter.yPos,
-                        left: letter.xPos
-                    }}
-                    key={index}>{letter.key}</li>
-            ))}
+                    className="QuickTimeEvent__list__item"
+                    key={index}
+                    style={{ bottom: `${xAndYPoss.current[index].yPos}%`, left: `${xAndYPoss.current[index].xPos}%` }}
+                >
+                    {key}
+                </li>
+            )
+            )}
+
         </ul>
     </main>)
 }

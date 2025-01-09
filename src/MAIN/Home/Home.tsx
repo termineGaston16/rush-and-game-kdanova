@@ -2,7 +2,7 @@ import { FaPlayCircle } from "react-icons/fa";
 import { HiQuestionMarkCircle } from "react-icons/hi";
 import LogoCompleto from '../../../public/logo(sinfondo)-completo.png'
 import './home.css'
-import { ReactNode, useRef, useState } from "react";
+import { ReactNode, SetStateAction, useRef, useState } from "react";
 import HowToPlay from "../HowToPlay/HowToPlay";
 import { GiDiamonds } from "react-icons/gi";
 import CatchIko from "../../GAMES/CATCHIKO/CatchIko";
@@ -10,11 +10,11 @@ import Colors from "../../GAMES/COLORS/Colors";
 import CopyTheCode from "../../GAMES/COPYTHECODE/CopyTheCode";
 import JoinTheCables from "../../GAMES/JOINTHECABLES/JoinTheCables";
 import MemoryGame from "../../GAMES/MEMORYGAME/MemoryGame";
-import QuickTimeEvent from "../../GAMES/QUICKTIMEEVENT/QuickTimeEvent";
 import RotateTheTriangle from "../../GAMES/ROTATETHETRIANGULE/RotateTheTriangle";
 import GameWon from "../GameWon/GameWon";
 import Before from "../../GAMES/BeforeAndAfter/Before";
 import After from "../../GAMES/BeforeAndAfter/After";
+import QuickTimeEvent from "../../GAMES/QUICKTIMEEVENT/QuickTimeEvent";
 
 
 export default function Home() {
@@ -22,7 +22,6 @@ export default function Home() {
     // const [showLogin, setShowLogin] = useState<boolean>(false)
 
     const [showInstructions, setShowInstructions] = useState<boolean>(false)
-
     const [showLocalScore, setShowLocalScore] = useState<number>(0.0)
 
     const timeLimitRef = useRef<number>(60000)
@@ -52,7 +51,7 @@ export default function Home() {
             setShowCurrentGameTitle(undefined)
             timeLimitRef.current = 60000
             gamesPlayedRef.current = 0
-            
+
         }, timeLimitRef.current);
         timerRef.current = timeBeforeLosing
 
@@ -70,7 +69,7 @@ export default function Home() {
 
     const continueGameLogic = (numberRandom: number, timeBeforeLosing: NodeJS.Timeout) => {
 
-        switch (4) {
+        switch (5) {
             case 0:
                 setGameOvercome(true)
                 setTimeout(() => { setGameOvercome(false) }, 3000)
@@ -144,6 +143,9 @@ export default function Home() {
                 setShowGame(<QuickTimeEvent
                     lineOfGames={lineOfGames}
                     timeBeforeLosing={timeBeforeLosing}
+                    setShowGame={setShowGame}
+                    gamesPlayedRef={gamesPlayedRef.current}
+                    showLocalScore={showLocalScore}
                 />);
 
                 gamesPlayedRef.current += 1
