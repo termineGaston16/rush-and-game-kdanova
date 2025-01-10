@@ -2,73 +2,88 @@
     width: 100vw;
     height: 100vh;
 
+    z-index: 99;
+    position: fixed;
+
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
 
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    z-index: 99;
-
-    background: url('../../../public/wallpaper-catch_iko.png');
+    background-image: url('../../../public/wallpaper-Colors.png');
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-.Colors__list {
+.Colors__Simon {
+    width: clamp(250px, 20vw, 300px);
+    aspect-ratio: 1/1;
     list-style: none;
 
-    width: clamp(200px, 20vw, 300px);
-    aspect-ratio: 1/1;
-
-    background: radial-gradient(circle at 20% 60%, rgb(35, 35, 35), rgb(53, 53, 53));
     border-radius: 50%;
-
+    border: 1px solid rgb(9, 9, 9);
+    background: radial-gradient(circle at 40% 70%, rgb(35, 35, 35),rgb(14, 14, 14));
+ 
     display: grid;
     grid-template-columns: 1fr 1fr;
-    align-items: center;
-    justify-items: center;
+    gap: 10px;
+
+    padding: 1%;
     transition: .3s;
 }
 
-.Colors__list__item {
-    border: 10px solid rgb(17, 17, 17);
-    width: 85%;
+.Colors__Simon__btn{
+    border: 3px solid rgb(11, 11, 11);
+    width: 100%;
     aspect-ratio: 1/1;
-    transition: .3s;
+
     cursor: pointer;
+    transition: .3s;
+}
+
+.red{
+    border-top-left-radius: 100%;
+    background: radial-gradient(circle at 40% 70%, rgb(210, 12, 12), rgb(125, 0, 0));
+}
+
+.blue{
+    border-top-right-radius: 100%;
+    background: radial-gradient(circle at 40% 70%, rgb(22, 12, 210), rgb(0, 15, 125));
 }
 
 
-.Colors__list__item.red:active {
-    background: radial-gradient(circle at 50% 60%, rgb(255, 0, 0), rgb(213, 4, 4)) !important;
-    box-shadow: 0px 0px 50px red;
+.green{
+    border-bottom-left-radius: 100%;
+    background: radial-gradient(circle at 40% 70%, rgb(98, 210, 12), rgb(10, 125, 0));
 }
 
-.Colors__list__item.yellow:active {
-    background: radial-gradient(circle at 50% 60%, rgb(225, 255, 0), rgb(182, 213, 4)) !important;
-    box-shadow: 0px 0px 50px yellow;
+.yellow{
+    border-bottom-right-radius: 100%;
+    background: radial-gradient(circle at 40% 70%, rgb(194, 210, 12),rgb(125, 119, 0));
 }
 
-.Colors__list__item.green:active {
-    background: radial-gradient(circle at 50% 60%, rgb(72, 255, 0), rgb(35, 213, 4)) !important;
-    box-shadow: 0px 0px 50px green;
+.red:active{
+    background: radial-gradient(circle at 40% 70%, rgb(210, 12, 12), rgb(245, 0, 0));
+}
+.blue:active{
+    background: radial-gradient(circle at 40% 70%, rgb(22, 12, 210), rgb(0, 26, 225));
+}
+.green:active{
+    background: radial-gradient(circle at 40% 70%, rgb(98, 210, 12), rgb(20, 238, 0));
+}
+.yellow:active{
+    background: radial-gradient(circle at 40% 70%, rgb(194, 210, 12),rgb(241, 229, 0));
 }
 
-.Colors__list__item.blue:active {
-    background: radial-gradient(circle at 50% 60%, rgb(0, 17, 255), rgb(4, 18, 213)) !important;
-    box-shadow: 0px 0px 50px blue;
+
+.simon-error{
+    box-shadow: 0px 0px 30px red;
+    border: 1px solid red;
+    animation: simon-error-animation .3s ease-in-out;
 }
 
-.error{
-    box-shadow: 0px 0px 50px rgba(255, 0, 0, 0.71);
-    animation: errorAnimation .3s linear;
-}
-
-@keyframes errorAnimation {
+@keyframes simon-error-animation {
     0%{
         transform: scale(1);
     }

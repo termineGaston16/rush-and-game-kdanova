@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import './colors.css'
 
 interface Props {
@@ -8,137 +8,106 @@ interface Props {
 
 const Colors: React.FC<Props> = ({ lineOfGames, timeBeforeLosing }) => {
 
-    const tableRef = useRef<HTMLUListElement>(null)
-    const [rhythm, setRhythm] = useState<number[]>([])
-    const [playerRhythm, setPlayerRhythm] = useState<number[]>([])
+    const rhythmRef = useRef<number[]>([])
+    const playerRhythm = useRef<number[]>([])
+    const cycles = useRef<number>(0)
+
+    const simonRef = useRef<HTMLUListElement>(null)
+    const simonIndexRef = useRef<number>(0)
+    const playerTurn = useRef<boolean>(false)
+
 
     const createRhythm = () => {
-        if (rhythm.length >= 3) {
-            clearTimeout(timeBeforeLosing)
-            lineOfGames(Math.floor(Math.random() * 7))
-            return
+
+        for (let index = 0; index < (cycles.current >= 0 ? 1 : cycles.current); index++) {
+            rhythmRef.current.push(Math.floor(Math.random() * 4))
         }
 
-        setRhythm(prevArray => [...prevArray, Math.floor(Math.random() * 4)])
+        const simonInterval = setInterval(() => {
+            showRhythm(rhythmRef.current[simonIndexRef.current])
+            simonIndexRef.current += 1
+
+            if (simonIndexRef.current >= cycles.current + 1) {
+                clearInterval(simonInterval)
+                playerTurn.current = true
+            }
+        }, 800)
     }
 
-    const showPattern = () => {
-        if (!tableRef.current) return
+    const showRhythm = (key: number) => {
+        simonRef.current?.classList.remove('simon-error')
 
-        rhythm.forEach((item, index) => {
-            setTimeout(() => {
+        setTimeout(() => {
+            (simonRef.current?.children[key] as HTMLElement).style.border = '3px solid rgb(11, 11, 11)',
+                (simonRef.current?.children[key] as HTMLElement).style.boxShadow = 'none'
+        }, 500);
+        (simonRef.current?.children[key] as HTMLElement).style.border = '1px solid white',
+            (simonRef.current?.children[key] as HTMLElement).style.boxShadow = '0px 0px 5px white'
+    }
 
-                switch (item) {
-                    case 0:
-                        (tableRef.current!.children[item] as HTMLLIElement).style.background = "radial-gradient(circle at 50% 60%, rgb(255, 0, 0), rgb(213, 4, 4))";
-                        (tableRef.current!.children[item] as HTMLLIElement).style.boxShadow = '0px 0px 50px red'
-                        break;
-                    case 1:
-                        (tableRef.current!.children[item] as HTMLLIElement).style.background = "radial-gradient(circle at 50% 60%, rgb(225, 255, 0), rgb(182, 213, 4))";
-                        (tableRef.current!.children[item] as HTMLLIElement).style.boxShadow = '0px 0px 50px yellow'
-                        break;
-                    case 2:
-                        (tableRef.current!.children[item] as HTMLLIElement).style.background = "radial-gradient(circle at 50% 60%, rgb(72, 255, 0), rgb(35, 213, 4))";
-                        (tableRef.current!.children[item] as HTMLLIElement).style.boxShadow = '0px 0px 50px green'
-                        break;
-                    case 3:
-                        (tableRef.current!.children[item] as HTMLLIElement).style.background = "radial-gradient(circle at 50% 60%, rgb(0, 17, 255), rgb(4, 18, 213))";
-                        (tableRef.current!.children[item] as HTMLLIElement).style.boxShadow = '0px 0px 50px blue'
-                        break;
+    const pressKey = (value: number) => {
 
-                    default:
-                        break;
+        if (playerTurn.current) {
+
+            playerRhythm.current.push(value)
+
+            if (playerRhythm.current.every((key, index) => key === rhythmRef.current[index])) {
+
+                if (playerRhythm.current.length === rhythmRef.current.length) {
+
+                    cycles.current += 1
+                    playerRhythm.current = []
+                    simonIndexRef.current = 0
+                    playerTurn.current = false
+
+                    if (cycles.current >= 3) {
+                        clearTimeout(timeBeforeLosing)
+                        lineOfGames(Math.floor(Math.random() * 7))
+                    } else {
+                        createRhythm()
+                    }
+
                 }
 
-                setTimeout(() => {
-                    switch (item) {
-                        case 0:
-                            (tableRef.current!.children[item] as HTMLLIElement).style.background = "radial-gradient(circle at 50% 60%, rgb(177, 0, 0), rgb(143, 0, 0))";
-                            (tableRef.current!.children[item] as HTMLLIElement).style.boxShadow = 'none'
-                            break;
-                        case 1:
-                            (tableRef.current!.children[item] as HTMLLIElement).style.background = "radial-gradient(circle at 50% 60%, rgb(177, 165, 0), rgb(143, 134, 0))";
-                            (tableRef.current!.children[item] as HTMLLIElement).style.boxShadow = 'none'
-                            break;
-                        case 2:
-                            (tableRef.current!.children[item] as HTMLLIElement).style.background = "radial-gradient(circle at 50% 60%, rgb(18, 177, 0), rgb(7, 143, 0)";
-                            (tableRef.current!.children[item] as HTMLLIElement).style.boxShadow = 'none'
-                            break;
-                        case 3:
-                            (tableRef.current!.children[item] as HTMLLIElement).style.background = "radial-gradient(circle at 50% 60%, rgb(0, 15, 152), rgb(0, 5, 143)";
-                            (tableRef.current!.children[item] as HTMLLIElement).style.boxShadow = 'none'
-                            break;
+            } else {
+                playerRhythm.current = []
+                simonIndexRef.current = 0
+                playerTurn.current = false
 
-                        default:
-                            break;
+                simonRef.current?.classList.add('simon-error')
+
+                const simonInterval = setInterval(() => {
+                    showRhythm(rhythmRef.current[simonIndexRef.current])
+                    simonIndexRef.current += 1
+
+                    if (simonIndexRef.current >= cycles.current + 1) {
+                        clearInterval(simonInterval)
+                        playerTurn.current = true
                     }
-                }, 500)
+                }, 800)
 
-            }, (index + 1) * 500)
-        });
+            }
+        }
     }
 
-    useEffect(() => {
-        showPattern()
-    }, [rhythm])
-
-    useEffect(() => {
-        createRhythm()
-    }, [])
-
-    useEffect(() => {
-        if (playerRhythm.length > 0 && playerRhythm.length === rhythm.length) {
-            if (rhythm.every((item, index) => item === playerRhythm[index])) {
-                createRhythm()
-            } else {
-
-                tableRef.current?.classList.add('error')
-                setTimeout(() => {
-                    tableRef.current?.classList.remove('error')
-                }, 1500)
-
-                showPattern()
-            }
-            setPlayerRhythm([])
-        }
-    }, [playerRhythm])
+    useEffect(() => { createRhythm() }, [])
 
     return (<main className='Colors'>
         <ul
-            ref={tableRef}
-            className='Colors__list'>
+            ref={simonRef}
+            className='Colors__Simon'>
             <li
-                onClick={() => setPlayerRhythm(prevArray => [...prevArray, 0])}
-                className='Colors__list__item red'
-                style={{
-                    borderTopLeftRadius: '1000px',
-                    background: "radial-gradient(circle at 50% 60%, rgb(177, 0, 0), rgb(143, 0, 0))"
-                }}
-            ></li>
+                onClick={() => pressKey(0)}
+                className='Colors__Simon__btn red'></li>
             <li
-                onClick={() => setPlayerRhythm(prevArray => [...prevArray, 1])}
-                className='Colors__list__item yellow'
-                style={{
-                    borderTopRightRadius: '1000px',
-                    background: "radial-gradient(circle at 50% 60%, rgb(177, 165, 0), rgb(143, 134, 0))"
-                }}
-            ></li>
+                onClick={() => pressKey(1)}
+                className='Colors__Simon__btn blue'></li>
             <li
-                onClick={() => setPlayerRhythm(prevArray => [...prevArray, 2])}
-                className='Colors__list__item green'
-                style={{
-                    borderBottomLeftRadius: '1000px',
-                    background: "radial-gradient(circle at 50% 60%, rgb(18, 177, 0), rgb(7, 143, 0)"
-                }}
-            ></li>
+                onClick={() => pressKey(2)}
+                className='Colors__Simon__btn green'></li>
             <li
-                onClick={() => setPlayerRhythm(prevArray => [...prevArray, 3])}
-                className='Colors__list__item blue'
-                style={{
-                    borderBottomRightRadius: '1000px',
-                    background: "radial-gradient(circle at 50% 60%, rgb(0, 15, 152), rgb(0, 5, 143)"
-                }}
-            ></li>
+                onClick={() => pressKey(3)}
+                className='Colors__Simon__btn yellow'></li>
         </ul>
     </main>)
 }
