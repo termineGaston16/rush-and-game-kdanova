@@ -11,15 +11,15 @@ interface Props {
 
 const ScoreTable: React.FC<Props> = ({ setShowScoreTable }) => {
 
-    const [playersOrderedLocally, setPlayersOrderedLocally] = useState<Player[]>([])
+    const [playersOrderedLocally, _setPlayersOrderedLocally] = useState<Player[]>([])
     const { isLoading, isError, refetch } = useQuery({
         queryKey: ['players'],
-        queryFn: async () => getPlayersFromDB(playersOrderedLocally),
+        // queryFn: async () => getPlayersFromDB(playersOrderedLocally),
         retry: 2,
         retryDelay: 2000,
         refetchOnWindowFocus: false,
-        onSuccess: (newData) => {
-            setPlayersOrderedLocally(newData)
+        onSuccess: (_newData) => {
+            // setPlayersOrderedLocally(newData)
         }
     });
 

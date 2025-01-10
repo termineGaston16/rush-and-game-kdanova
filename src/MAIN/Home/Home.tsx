@@ -188,7 +188,7 @@ export default function Home() {
 
 
         <span className="Home__copyright">KDA/NOVA 2024</span>
-        <img className="Home__logo" src={LogoCompleto} alt="rush-and-game-logo" loading="lazy" />
+        <img className="Home__logo" src={LogoCompleto} alt="Logo de Rush & Game" loading="lazy" />
 
         <div className="Home__users-data">
             <span className="Home__users-data__name">Punt. local:</span>
