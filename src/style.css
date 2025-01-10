@@ -13,11 +13,7 @@
   color: white;
   overflow-x: hidden;
 
-  background-image: url('../public/wallpaper-menu.png');
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
-
+  background-color: rgba(0, 0, 0, 0.577);
   scrollbar-gutter: stable;
 }
 

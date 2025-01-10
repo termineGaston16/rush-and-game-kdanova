@@ -10,6 +10,11 @@
     justify-content: center;
     flex-direction: column;
     gap: clamp(2px, 1vw, 10px);
+
+    background-image: url('../../../public/wallpaper-menu.png');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .Home__copyright {
