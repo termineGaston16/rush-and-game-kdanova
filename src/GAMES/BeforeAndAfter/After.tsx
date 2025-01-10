@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import './afther.css'
 
 interface Props {
@@ -12,12 +12,16 @@ const After: React.FC<Props> = ({ gamesPlayedRef, showLocalScore, setShowGame })
     const [alertMessage, _setAlertMessage] = useState<string>(() => {
         if (gamesPlayedRef <= 3) {
             return '¡Mejor la próxima!'
-        } else if (gamesPlayedRef >= 4 && gamesPlayedRef <= 9) {
+        } else if (gamesPlayedRef >= 5 && gamesPlayedRef <= 15) {
             return 'Bien hecho!'
         } else {
             return '¡Has avanzado mucho!'
         }
     })
+
+    useEffect(()=>{
+        document.title = 'Rush & Game | by KDA/NOVA'
+    },[])
 
     return (<div className="After">
         <h2 className="After__title">{alertMessage}</h2>

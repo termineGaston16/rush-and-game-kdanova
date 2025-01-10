@@ -2,17 +2,17 @@ import { useEffect, useState } from "react";
 import './gameWon.css'
 
 interface Props {
-    setShowLocalScore: React.Dispatch<React.SetStateAction<number>>
+    showLocalScore: React.RefObject<number>
 }
 
-const GameWon: React.FC<Props> = ({ setShowLocalScore }) => {
+const GameWon: React.FC<Props> = ({ showLocalScore }) => {
 
     const [scoreToSum, setScoreToSum] = useState<number>(0.0)
     useEffect(()=>{
         const scoreObtained = parseFloat(Math.random().toFixed(2))
         
         setScoreToSum(scoreObtained)
-        setShowLocalScore(prevScore => prevScore += scoreObtained)
+        showLocalScore.current += scoreObtained
     },[])
 
     return (<div className="GameWon">

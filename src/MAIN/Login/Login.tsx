@@ -1,7 +1,6 @@
 import { toast, Toaster } from 'sonner'
 import './login.css'
 import { useQuery } from 'react-query'
-import { loginUser } from '../../FIREBASE/database'
 import { useState } from 'react'
 import { AiOutlineLoading } from "react-icons/ai";
 
@@ -13,7 +12,7 @@ interface Props {
     } | undefined>>
 }
 
-const Login: React.FC<Props> = ({ setShowLogin, setLocalAccount }) => {
+const Login: React.FC<Props> = ({ setShowLogin }) => {
 
     const [dataPerfilLocal, setDataPerfilLocal] = useState<{
         usernameLogin: string,
@@ -22,7 +21,7 @@ const Login: React.FC<Props> = ({ setShowLogin, setLocalAccount }) => {
 
     const { isLoading } = useQuery({
         queryKey: ['localAccount', dataPerfilLocal],
-        queryFn: () => loginUser(dataPerfilLocal!.usernameLogin, dataPerfilLocal!.passwordLogin),
+        // queryFn: () => loginUser(dataPerfilLocal!.usernameLogin, dataPerfilLocal!.passwordLogin),
         enabled: !!dataPerfilLocal,
         cacheTime: 0,
         refetchOnWindowFocus: false,
@@ -35,10 +34,10 @@ const Login: React.FC<Props> = ({ setShowLogin, setLocalAccount }) => {
                 return
             }
 
-            setLocalAccount({
-                score: newPlayer.score,
-                username: newPlayer.username
-            })
+            // setLocalAccount({
+            //     score: newPlayer.score,
+            //     username: newPlayer.username
+            // })
             toast.success('Sesión iniciada correctamente')
             setShowLogin(false)
         },

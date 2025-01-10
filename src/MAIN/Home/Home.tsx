@@ -2,7 +2,7 @@ import { FaPlayCircle } from "react-icons/fa";
 import { HiQuestionMarkCircle } from "react-icons/hi";
 import LogoCompleto from '../../../public/logo(sinfondo)-completo.png'
 import './home.css'
-import { ReactNode, SetStateAction, useRef, useState } from "react";
+import { ReactNode, useRef, useState } from "react";
 import HowToPlay from "../HowToPlay/HowToPlay";
 import { GiDiamonds } from "react-icons/gi";
 import CatchIko from "../../GAMES/CATCHIKO/CatchIko";
@@ -22,9 +22,9 @@ export default function Home() {
     // const [showLogin, setShowLogin] = useState<boolean>(false)
 
     const [showInstructions, setShowInstructions] = useState<boolean>(false)
-    const [showLocalScore, setShowLocalScore] = useState<number>(0.0)
+    const showLocalScore = useRef<number>(0.0)
 
-    const timeLimitRef = useRef<number>(60000)
+    const timeLimitRef = useRef<number>(30000)
     const gamesPlayedRef = useRef<number>(0)
 
     const [showGame, setShowGame] = useState<ReactNode | null>(null)
@@ -44,12 +44,12 @@ export default function Home() {
         const timeBeforeLosing = setTimeout(() => {
             setShowGame(<After
                 gamesPlayedRef={gamesPlayedRef.current}
-                showLocalScore={showLocalScore}
+                showLocalScore={showLocalScore.current}
                 setShowGame={setShowGame}
             />)
 
             setShowCurrentGameTitle(undefined)
-            timeLimitRef.current = 60000
+            timeLimitRef.current = 30000
             gamesPlayedRef.current = 0
 
         }, timeLimitRef.current);
@@ -69,7 +69,9 @@ export default function Home() {
 
     const continueGameLogic = (numberRandom: number, timeBeforeLosing: NodeJS.Timeout) => {
 
-        switch (1) {
+        document.title = `${(showLocalScore.current).toFixed(2)} pts. | by KDA/NOVA`
+
+        switch (numberRandom) {
             case 0:
                 setGameOvercome(true)
                 setTimeout(() => { setGameOvercome(false) }, 3000)
@@ -81,7 +83,7 @@ export default function Home() {
                 />);
 
                 gamesPlayedRef.current += 1
-                timeLimitRef.current -= 500
+                timeLimitRef.current -= 1000
                 break;
             case 1:
                 setGameOvercome(true)
@@ -94,7 +96,7 @@ export default function Home() {
                 />);
 
                 gamesPlayedRef.current += 1
-                timeLimitRef.current -= 500
+                timeLimitRef.current -= 1000
                 break;
             case 2:
                 setGameOvercome(true)
@@ -107,7 +109,7 @@ export default function Home() {
                 />);
 
                 gamesPlayedRef.current += 1
-                timeLimitRef.current -= 500
+                timeLimitRef.current -= 1000
                 break;
             case 3:
                 setGameOvercome(true)
@@ -120,7 +122,7 @@ export default function Home() {
                 />);
 
                 gamesPlayedRef.current += 1
-                timeLimitRef.current -= 500
+                timeLimitRef.current -= 1000
                 break;
             case 4:
                 setGameOvercome(true)
@@ -133,7 +135,7 @@ export default function Home() {
                 />);
 
                 gamesPlayedRef.current += 1
-                timeLimitRef.current -= 500
+                timeLimitRef.current -= 1000
                 break;
             case 5:
                 setGameOvercome(true)
@@ -145,11 +147,11 @@ export default function Home() {
                     timeBeforeLosing={timeBeforeLosing}
                     setShowGame={setShowGame}
                     gamesPlayedRef={gamesPlayedRef.current}
-                    showLocalScore={showLocalScore}
+                    showLocalScore={showLocalScore.current}
                 />);
 
                 gamesPlayedRef.current += 1
-                timeLimitRef.current -= 500
+                timeLimitRef.current -= 1000
                 break;
             case 6:
                 setGameOvercome(true)
@@ -162,7 +164,7 @@ export default function Home() {
                 />);
 
                 gamesPlayedRef.current += 1
-                timeLimitRef.current -= 500
+                timeLimitRef.current -= 1000
                 break;
             default:
                 console.warn("Número aleatorio fuera del rango esperado.");
@@ -182,7 +184,7 @@ export default function Home() {
                     className="showCurrentGameTitle__timeBar"></div>
             </div>}
         {showGame && showGame}
-        {gameOvercome && <GameWon setShowLocalScore={setShowLocalScore} />}
+        {gameOvercome && <GameWon showLocalScore={showLocalScore} />}
 
 
         <span className="Home__copyright">KDA/NOVA 2024</span>
@@ -190,7 +192,7 @@ export default function Home() {
 
         <div className="Home__users-data">
             <span className="Home__users-data__name">Punt. local:</span>
-            <span className="Home__users-data__score">{showLocalScore.toFixed(2)}</span> <GiDiamonds />
+            <span className="Home__users-data__score">{showLocalScore.current.toFixed(2)}</span> <GiDiamonds />
         </div>
 
         <div className="Home__buttons">
