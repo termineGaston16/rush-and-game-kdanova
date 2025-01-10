@@ -8,13 +8,18 @@
 
 /* ROOT se encarga del diseño en todo el archivo */
 :root {
-  background-color: rgb(26, 26, 26);
   font-family: 'Times New Roman', Times, serif;
   color: white;
   overflow-x: hidden;
 
   background-color: rgba(0, 0, 0, 0.577);
   scrollbar-gutter: stable;
+
+  
+  background: url('../public/wallpaper-menu.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 :root::before {
